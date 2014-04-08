@@ -1,0 +1,15 @@
+config.js
+.cov
+node_modules
+.naeindex
+public/user_data
+coverage.html
+.monitor
+
+# Ignore Mac OS desktop services store
+.DS_Store
+
+# Ignore Windows desktop setting file
+desktop.ini
+
+*.log

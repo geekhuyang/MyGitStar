@@ -1,0 +1,394 @@
+html, body, div, span, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+abbr, address, cite, code,
+del, dfn, em, img, ins, kbd, q, samp,
+small, strong, sub, sup, var,
+b, i,
+dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td,
+article, aside, canvas, details, figcaption, figure, 
+footer, header, hgroup, menu, nav, section, summary,
+time, mark, audio, video {
+		margin:0;
+		padding:0;
+		border:0;
+		outline:0;
+		font-size:100%;
+		vertical-align:baseline;
+		background:transparent;
+}
+
+body {
+		line-height:1;
+}
+
+article,aside,details,figcaption,figure,
+footer,header,hgroup,menu,nav,section { 
+		display:block;
+}
+
+nav ul {
+		list-style:none;
+}
+
+blockquote, q {
+		quotes:none;
+}
+
+blockquote:before, blockquote:after,
+q:before, q:after {
+		content:'';
+		content:none;
+}
+
+a {
+		margin:0;
+		padding:0;
+		font-size:100%;
+		vertical-align:baseline;
+		background:transparent;
+}
+
+/* change colours to suit your needs */
+ins {
+		background-color:#ff9;
+		color:#000;
+		text-decoration:none;
+}
+
+/* change colours to suit your needs */
+mark {
+		background-color:#ff9;
+		color:#000; 
+		font-style:italic;
+		font-weight:bold;
+}
+
+del {
+		text-decoration: line-through;
+}
+
+abbr[title], dfn[title] {
+		border-bottom:1px dotted;
+		cursor:help;
+}
+
+table {
+		border-collapse:collapse;
+		border-spacing:0;
+}
+
+/* change border colour to suit your needs */
+hr {
+		display:block;
+		height:1px;
+		border:0;   
+		border-top:1px solid #cccccc;
+		margin:1em 0;
+		padding:0;
+}
+
+input, select {
+		vertical-align:middle;
+}
+
+/* 
+ * ----------------------------- *
+ */
+
+* {
+		 -moz-box-sizing: border-box;
+			-ms-box-sizing: border-box;
+			 -o-box-sizing: border-box;
+					box-sizing: border-box;
+}
+
+body {
+	font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+	padding-top: 60px;
+}
+
+a {
+	color: #00B7FF;
+}
+
+a:hover {
+	text-decoration: none;
+}
+
+/* navbar li 下边border */
+@media (min-width: 768px) {
+	.navbar-nav li a {
+		border-bottom: 4px solid transparent;
+	}
+	.navbar-nav > li.active > a {
+		border-color: #19d;
+	}
+	.navbar-nav > li > a:hover {
+		border-color: #19d;
+	}
+}
+
+/* 高亮选中 */
+::-moz-selection {
+  background:#08c;
+  color:#fff;
+}
+::selection {
+  background:#08c;
+  color:#fff;
+}
+
+h1 {
+	padding: .5em;
+	text-align: center;
+	display: block;
+	font-size: 3em;
+	text-shadow: 0px 1px 3px rgba(0, 0, 0, 0.5);
+}
+
+#star {
+	width: 100%;
+	margin: 1em auto;
+	box-shadow: #ccc 0 1px 4px 1px;
+	-webkit-transition: opacity .2s ease-out, -webkit-transform .2s ease-out;
+	transition: opacity .2s ease-out, transform .2s ease-out;
+}
+#star li {
+	overflow: hidden;
+	margin: 0;
+	padding: 10px 0;
+	background: #fff;
+	cursor: pointer;
+	position: relative;
+	list-style-type: none;
+	height: 60px;
+	border-top: 1px solid rgb(221, 221, 221);
+}
+#star li:hover {
+	background: #fff4ef;
+}
+#star .star-order {
+	display: inline-block;
+	width: 10%;
+	vertical-align: middle;
+	text-align: center;
+}
+#star .item-order {
+	font-size: 1.2em;
+}
+#star .item-order:before {
+	content: "#";
+	padding-right: 3px;
+}
+#star .star-count {
+	color: #aaa;
+}
+#star .star-info {
+	display: inline-block;
+	width: 90%;
+	vertical-align: middle;
+	height: 100%;
+	white-space:nowrap;
+}
+#star span {
+	display: inline-block;
+	padding-right: .5em;
+	font-size: 1em;
+	letter-spacing: -0.01em;
+}
+#star .star-name {
+	color: #222;
+	font-size: 1.5em;
+}
+#star .star-name {
+	font-family: "Exo",Helvetica,sans-serif;
+	letter-spacing: 0.05em;
+	display: inline-block;
+	font-size: 1.6em;
+}
+#star .star-description {
+	display: block;
+	font-size: 1em;
+	color: #666;
+}
+#star .star-avatar {
+	opacity: .3;
+	position: absolute;
+	top: 0;
+	right: 0;
+	display: block;
+	height: 100%;
+	border: 1px solid rgba(0,0,0,0.1);
+}
+#star li:hover img {
+	opacity: 1;
+}
+#star .gitUser-name {
+	font-size: 2em;
+	letter-spacing: 0.05em;
+}
+
+/* Modal */
+.modal-title {
+	font-size: 2em;
+	padding-bottom: .5em;
+}
+.modal-description {
+	font-size: 1.3em;
+	color: #888;
+}
+.modal-info {
+	padding-top: .5em;
+	margin: 0;
+}
+.modal-info span {
+	font-size: 1.2em;
+	padding-right: 1em;
+}
+.modal-body {
+	padding: 1em;
+	padding-top: .5em;
+	margin: 0;
+}
+
+/*
+ * ------------- *
+ * register page *
+ */
+
+/* 表单标题 */
+.form-title {
+	letter-spacing: 0.1em;
+	font-size: 2.5em;
+	margin: 0;
+	padding: 0;
+	text-align: left;
+}
+
+/* 忘记密码 */
+#forgot_pass {
+	padding-left: 1.5em;
+}
+
+/* container */
+#container {
+	margin-top: 0;
+	margin-bottom: 0;
+	padding-top: 50px;
+}
+
+/* about */
+.about h1 {
+	letter-spacing: 0.1em;
+	font-size: 2.5em;
+}
+.about p {
+	padding-top: .5em;
+	font-size: 1.2em;
+	line-height: 1.5em;
+}
+
+/* footer */
+footer {
+	padding-top: 30px;
+	padding-bottom: 30px;
+}
+.footer-wrapper {
+	padding-top: 30px;
+	border-top: 1px solid rgba(0,0,0,0.15);
+}
+
+/* 信息提示栏 */
+.infoBox {
+	background-color: transparent;
+	display: block;
+	position: fixed;
+	top: 50px;
+	width: 100%;
+	margin: .4em auto .2em auto;
+	z-index: 1000;
+}
+.infoBox > div {
+	width: 80%;
+	margin: 0 auto;
+	box-shadow: 0 0 3px 1px rgba(0,0,0,0.2);
+}
+
+/* 信息栏 */
+#sidebar span {
+	display: block;
+	padding: .5em;
+	font-size: 1em;
+}
+
+/* readme */
+.readme {
+	width: 60%;
+	margin: 0 auto;
+	box-shadow: #ccc 0 1px 4px 1px;
+}
+
+@media (max-width: 1200px) {
+	.container {
+		width: 96%;
+	}
+}
+@media (max-width: 1080px) {
+	section#sidebar.col-sm-3 {
+		width: 35%;
+	}
+	section#main.col-sm-9 {
+		width: 65%;
+	}
+	.readme {
+		width: 80%;
+	}
+}
+@media (max-width: 768px) {
+	h1.lead {
+		font-size: 2em;
+	}
+	h2.lead {
+		font-size: 1.2em;
+	}
+	#user > ul.dropdown-menu {
+		display: block;
+		position: static;
+		float: none;
+		width: auto;
+		margin-top: 0px;
+		background-color: transparent;
+		border: 0px none;
+		box-shadow: none;
+	}
+	#star .star-order {
+		width: 20%;
+	}
+	#star .star-info {
+		width: 80%;
+	}
+	section#sidebar.col-sm-3 {
+		width: 100%;
+	}
+	section#main.col-sm-9 {
+		width: 100%;
+	}
+	div#container.container {
+		width: 100%;
+		padding: 0;
+	}
+	.infoBox {
+	}
+	.infoBox > div {
+		width: 96%;
+	}
+	/* nav pills */
+	.nav-pills > li > a {
+		padding: 5px 4px;
+	}
+	.readme {
+		width: 96%;
+	}
+}

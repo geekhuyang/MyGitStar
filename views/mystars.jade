@@ -1,0 +1,147 @@
+extends layout
+
+block content
+	section#sidebar.col-sm-3
+		div.panel.panel-default
+			div.panel-heading #{user.name}
+			div.panel-body
+				div.panel-group#accordion
+					div.panel.panel-default
+						div.panel-heading
+							h4.panel-title
+								a(data-toggle="collapse", data-parent="#accordion", href="#collapseThree")
+									| # 基本信息
+						div#collapseThree.panel-collapse.in
+							div.panel-body
+								- if (user.githubUsername)
+									span
+										i.fa.fa-github.fa-lg &nbsp;
+										| #{user.githubUsername}
+								- else
+									div.alert.alert-danger.alert-dismissable
+										button.close(type='button', data-dismiss='alert', aria-hidden='true') &times;
+										strong 请先在
+											a.text-success(href='/setting',style='text-decoration:underline') 设置
+											| 里设置您的Github账号
+								- if (length)
+									span 
+										i.fa.fa-star.fa-lg &nbsp;
+										em.total #{length}
+								- if (update_at)
+									p
+										span 
+											i.fa.fa-calendar.fa-lg &nbsp;
+											| 最近更新 #{update_at}
+							button#btnUpdate.btn.btn-primary.btn-block(type='button') 从Github更新
+					div.panel.panel-default
+						div.panel-heading
+							h4.panel-title
+								a(data-toggle="collapse", data-parent="#accordion", href="#collapseOne")
+									| # 排序
+						div#collapseOne.panel-collapse.collapse
+							div.panel-body.text-center
+								div.btn-group
+									button#sortByStar.btn.btn-default(type='button') 
+										i.fa.fa-sort-numeric-desc &nbsp;
+										| star数
+									button#sortByTime.btn.btn-default(type='button') star时间
+					div.panel.panel-default
+						div.panel-heading
+							h4.panel-title
+								a(data-toggle="collapse", data-parent="#accordion", href="#collapseTwo")
+									| # 语言分布
+						div#collapseTwo.panel-collapse.collapse
+							//- div.panel-body
+							- if (languages)
+								table.table.table-hover.text-center
+									thead
+										tr.success
+											td # 语言
+											td # 数量
+									tbody
+									- for (var i in languages)
+										tr
+											td #{i}
+											td #{languages[i]}
+	section#main.col-sm-9
+		ul#myTab.nav.nav-pills
+			- for (var i = 0; i < categoriesKeys.length; i++)
+				li(id='tab-#{charCodes[i]}')
+					a(href='#content-#{charCodes[i]}', data-toggle='tab') 
+						| #{categoriesKeys[i]}
+						span.badge #{categories[categoriesKeys[i]].length}
+		div.tab-content
+			- for (var j = 0; j < categoriesKeys.length; j++)
+				- var category = categoriesKeys[j];
+					div(id='content-#{charCodes[j]}').tab-pane.fade
+						section#star
+							ol
+								- var stars = categories[category];
+								// - console.log(stars);
+								- for (var k = 0; k < stars.length; k++)
+									- var starItem = stars[k];
+									- var star = starItem['star'];
+									- var owner = starItem['owner'];
+									//- 下面这句没意义，但去掉li渲染不出来，只要随便读取下要渲染的变量，就能渲染出来 jade bug？
+									- var id = star.id;
+										li(id='star-#{star.id}', data-order='#{starItem.order}', data-id='#{star.id}', data-htmlUrl='#{star.html_url}', data-gitUrl='#{star.git_url}', data-sshUrl='#{star.ssh_url}', data-cloneUrl='#{star.clone_url}', data-size='#{star.size}', data-starNum='#{star.stargazers_count}', data-forkNum='#{star.forks_count}', data-watchNum='#{star.watchers_count}', data-homepage='#{star.homepage}', data-category='#{starItem.category}', data-remark='#{starItem.remark}', data-placement="top", data-toggle="tooltip", data-original-title="#{starItem.remark}")
+											h3.star-order
+												div.item-order= k+1
+												div.star-count 
+													i.fa.fa-star &nbsp;
+													| #{star.stargazers_count}
+											div.star-info
+												p
+													span.star-name #{star.name}
+													i @&nbsp;
+													span.star-owner #{owner.login}
+													i #&nbsp;
+													span.star-language #{star.language}
+												p.star-description #{star.description}
+												img.star-avatar(src='#{owner.avatar_url}', alt='avatar')
+	
+	div#myModal.modal.fade
+		div.modal-dialog
+			div.modal-content
+				div.modal-header
+					button.close(type="button", data-dismiss="modal", aria-hidden="true") &times;
+					hgroup
+						p.modal-title
+						blockquote.modal-description
+					p.modal-info
+						i.fa.fa-github.fa-lg &nbsp;
+						span.modal-owner
+						i.fa.fa-star.fa-lg &nbsp;
+						span.modal-starNum
+						i.fa.fa-code-fork.fa-lg &nbsp;
+						span.modal-forkNum
+					p.modal-info
+						i.fa.fa-code.fa-lg &nbsp;
+						span.modal-language
+						i.fa.fa-link.fa-lg &nbsp;
+						span
+							a.modal-htmlurl link
+						i.fa.fa-rocket.fa-lg &nbsp;
+						span
+							a.modal-readme(target='_blank') readme
+					p.modal-info.hidden
+						//- i.fa.fa-file.fa-lg &nbsp;
+						span.hidden.modal-size
+						span.hidden.modal-repoId
+				//- form元素包含 modal-body modal-footer
+				form(method="post", role="form")
+					div.modal-body
+						input.modal-id.form-control.hidden(name='starid', value='')
+						div.input-group.modal-category.col-sm-4
+							span.input-group-addon 分类
+							input.form-control(name='category', type='text', placeholder='分类')
+						//- div.input-group.modal-tags.col-sm-6
+						//- 	span.input-group-addon 标签(用空格分隔)
+						//- 	input.form-control(name='tags', type='text', placeholder='标签')
+						div.input-group.modal-remark
+							span.input-group-addon 备注
+							textarea.form-control(name='remark', row='2', placeholder='添加备注')
+					div.modal-footer
+						button.btn.btn-default(type="button", data-dismiss="modal") 关闭
+						button#deleteItemBtn.btn.btn-danger(type="button") 删除
+						button#submitBtn.btn.btn-primary(type="submit") 保存

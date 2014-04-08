@@ -1,0 +1,10 @@
+extends layout
+
+block content
+	div.readme
+		p.readme-title.text-primary
+			i.fa.fa-github.fa-lg &nbsp;
+			| #{author} 
+			span.text-muted / 
+			| #{repo}
+		!= md.toHTML(contents)

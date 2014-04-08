@@ -1,0 +1,91 @@
+doctype html
+html
+	head
+		meta(charset='UTF-8')
+		meta(name='viewport', content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no')
+		title= title
+		- if (debugMode)
+			//- debug local file
+			link(rel='stylesheet', href='/stylesheets/vendor/bootstrap.min.css')
+			link(rel='stylesheet', href='/stylesheets/vendor/font-awesome.css')
+		- else
+			//- production 模式 CDN服务
+			//- bootstrap
+			link(href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css", rel="stylesheet")
+			//- foot-asesome
+			link(href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css", rel="stylesheet")
+		link(rel='stylesheet', href='/stylesheets/build/style.min.css')
+			
+	body
+		header#navHeader.navbar.navbar-fixed-top.navbar-default(data-active='#{active}', role='navigation')
+			div.container
+				div.navbar-header
+					button.navbar-toggle(data-target=".bs-navbar-collapse", data-toggle="collapse", type="button")
+						span.sr-only Toggle navigation
+						span.icon-bar
+						span.icon-bar
+						span.icon-bar
+					a.navbar-brand(href='/home')= title
+				nav.collapse.navbar-collapse.bs-navbar-collapse(role="navigation")
+					ul.nav.navbar-nav
+						li#home
+							a(href='/home') 首页
+						li#about
+							a(href='/about') 关于
+						if !user
+							li#signin
+								a(href='/signin') 登入
+							//- li#signup
+								//- a(href='/signup') 注册
+					if user
+						ul.nav.navbar-nav.navbar-right
+							li#user.dropdown
+								a#dropBtn(role='button', data-toggle='dropdown', data-target='#navDropdown')
+									| #{user.name}&nbsp;
+									span.caret
+								ul.dropdown-menu(role='menu', aria-labelledby='dropBtn')
+									li(role='presentation')
+										a(href='/mystar', tabindex='-1', role='menuitem')
+											i.fa.fa-tags
+											| &nbsp;Git数据
+									li(role='presentation')
+										a(href='/setting', tabindex='-1', role='menuitem')
+											i.fa.fa-wrench
+											| &nbsp;设置
+									li.divider(role='presentation')
+									li(role='presentation')
+										a(href='/signout', tabindex='-1', role='menuitem')
+											| &nbsp;退出
+		div.infoBox
+			// - console.log("error:", error);
+			if error.length
+				div#error.row.alert.alert-danger.alert-dismissable
+					button.close(type='button', data-dismiss='alert', aria-hidden='true') &times;
+					p= error
+			// - console.log("success:", success);
+			if success.length
+				div#success.row.alert.alert-success.alert-dismissable
+					button.close(type='button', data-dismiss='alert', aria-hidden='true') &times;
+					p= success
+		div#container.container
+			block content
+		footer.text-center
+			div.container.footer-wrapper
+				p
+					a(href='https://github.com/Sidong/MyStar') @#{title}
+					| &nbsp;2014
+		if (debugMode)
+			script(src='/javascripts/vendor/jquery.min.js')
+			script(src='/javascripts/vendor/bootstrap.min.js')
+		else
+			script(src='//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js')
+			script(src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js")
+		//- 路由render指定加载的脚本
+		if script
+			script(src='/javascripts/build/' + script)
+		if (google_tracker_id)
+			script(type='text/javascript').
+				(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+				})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+				ga('create', '#{google_tracker_id}', 'mygitstar.herokuapp.com');
+				ga('send', 'pageview');
