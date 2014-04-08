@@ -4,43 +4,12 @@ $(document).ready(function () {
 
 	var isUpdating = false;
 	var shortTimeOut = 10000;
-	var updateTimeOut = 60000;
 
 	// 为导航菜单加active
 	var active = $('#navHeader').attr('data-active');
 	if (active) {
 		$('#' + active).addClass('active');
 	}
-
-	// 更新按钮
-	$('#btnUpdate').click(function (e) {
-		e.preventDefault();
-		if (!isUpdating) {
-			$.ajax({
-				type: 'POST',
-				timeout: updateTimeOut,
-				url: '/ajaxUpdateFromGithub',
-				success: function (data) {
-					data = JSON.parse(data);
-					if (data.status) {
-						var $success = $('<div class="row alert alert-success alert-dismissable"><button class="close" type="button" data-dismiss="alert" aria-hidden="true">&times;</button><p>' + data.message + '</p></div>');
-						$success.prependTo($('.infoBox')[0]);
-					} else {
-						var $error = $('<div class="row alert alert-danger alert-dismissable"><button class="close" type="button" data-dismiss="alert" aria-hidden="true">&times;</button><p>' + data.message + '</p></div>');
-						$error.prependTo($('.infoBox')[0]);
-					}
-				},
-				// ajax失败
-				error: function () {
-					var $error = $('<div class="row alert alert-danger alert-dismissable"><button class="close" type="button" data-dismiss="alert" aria-hidden="true">&times;</button><p>更新超时</p></div>');
-					$error.prependTo($('.infoBox')[0]);
-				}
-			});
-		} else {
-			var show = $('<div class="row alert alert-danger alert-dismissable"><button class="close" type="button" data-dismiss="alert" aria-hidden="true">&times;</button><p>正在更新，请勿重复提交。</p></div>');
-			show.prependTo($('.infoBox')[0]);
-		}
-	});
 
 	// 备注提示
 	$('.tab-content').mouseover(function (e) {
@@ -203,6 +172,7 @@ $(document).ready(function () {
 								}
 								var $success = $('<div class="row alert alert-success alert-dismissable"><button class="close" type="button" data-dismiss="alert" aria-hidden="true">&times;</button><p>更新成功</p></div>');
 								$success.prependTo($('.infoBox')[0]);
+								setTimeout(3000, function () { if ($success) { $success.remove(); } });
 							} else {
 								// 旧分类
 								var $oldCategory2 = $li.closest('div.tab-pane');
@@ -238,26 +208,31 @@ $(document).ready(function () {
 								}
 								var submitSuccess = $('<div class="row alert alert-success alert-dismissable"><button class="close" type="button" data-dismiss="alert" aria-hidden="true">&times;</button><p>更新成功</p></div>');
 								submitSuccess.prependTo($('.infoBox')[0]);
+								setTimeout(3000, function () { if (submitSuccess) { submitSuccess.remove(); } });
 							}
 						} else {
 							var $error = $('<div class="row alert alert-danger alert-dismissable"><button class="close" type="button" data-dismiss="alert" aria-hidden="true">&times;</button><p>找不到元素</p></div>');
 							$error.prependTo($('.infoBox')[0]);
+							setTimeout(3000, function () { if ($error) { $error.remove(); } });
 						}
 					} else {
 						// ajax失败 
 						var submitError = $('<div class="row alert alert-danger alert-dismissable"><button class="close" type="button" data-dismiss="alert" aria-hidden="true">&times;</button><p>' + data.message + '</p></div>');
 						submitError.prependTo($('.infoBox')[0]);
+						setTimeout(3000, function () { if (submitError) { submitError.remove(); } });
 					}
 				},
 				error: function () {
 					var $error = $('<div class="row alert alert-danger alert-dismissable"><button class="close" type="button" data-dismiss="alert" aria-hidden="true">&times;</button><p>更新超时</p></div>');
 					$error.prependTo($('.infoBox')[0]);
+					setTimeout(3000, function () { if ($error) { $error.remove(); } });
 				}
 			});
 		} else {
 			$('#myModal').modal('hide');
 			var show = $('<div class="row alert alert-danger alert-dismissable"><button class="close" type="button" data-dismiss="alert" aria-hidden="true">&times;</button><p>请等待上次操作反馈后再提交更新..</p></div>');
 			show.prependTo($('.infoBox')[0]);
+			setTimeout(3000, function () { if (show) { show.remove(); } });
 		}
 	});
 
