@@ -16,7 +16,9 @@ $(document).ready(function () {
 	var autoremove = function (entry, timeout) {
 		if (entry) {
 			setTimeout(function () {
-				entry.animate({ opacity: 0, height: "toggle" }, 1000, function () { if (entry) { entry.remove(); }});
+				if (entry) {
+					entry.animate({ opacity: 0, height: 0 }, 1000, function () { if (entry) { entry.remove(); }});
+				}
 			}, timeout);
 		}
 	};
