@@ -10,7 +10,6 @@ var User = require('../proxy').User;
 var StarItem = require('../proxy').StarItem;
 var myGit = require('../lib/myGit');
 var config = require('../config').config;
-var format_date = require('../lib/util').format_date;
 
 // 我的星星页面
 exports.index = function (req, res) {
@@ -41,7 +40,6 @@ exports.index = function (req, res) {
 					categories: {},
 					languages: [],
 					length: 0,
-					update_at: '',
 					charCodes: []
 				});
 			}
@@ -63,13 +61,6 @@ exports.index = function (req, res) {
 			// 查找star item
 			StarItem.getByUserId(user._id, function (err, starItems) {
 				var length = starItems.length;
-				// 第一次注册的账号没有update_at
-				var update_at;
-				if (user.update_at) {
-					update_at = format_date(new Date(user.update_at), true);
-				} else {
-					update_at = '未更新';
-				}
 				
 				// 计算各语言数量 并排序
 				var languages = _.chain(starItems).reduce(function (counts, starItem) {
@@ -117,7 +108,6 @@ exports.index = function (req, res) {
 					categories: categories,
 					languages: languages,
 					length: length,
-					update_at: update_at,
 					charCodes: charCodes
 				});
 			});
