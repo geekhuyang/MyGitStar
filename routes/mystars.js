@@ -26,65 +26,100 @@ exports.index = function (req, res) {
 			req.flash('error', '会话失效，重新登入！');
 			return res.redirect('/signin');
 		}
-		// 查找star item
-		StarItem.getByUserId(user._id, function (err, starItems) {
-			var length = starItems.length;
-			// 第一次注册的账号没有update_at
-			var update_at;
-			if (user.update_at) {
-				update_at = format_date(new Date(user.update_at), true);
-			} else {
-				update_at = '未更新';
+
+		// update from github
+		myGit.getStars(user.githubUsername, function (err, stars) {
+			if (err) {
+				console.log('update from github error..');
+				req.flash('error', '更新出错，请刷新页面！');
+				res.render('mystars', {
+					// 指定active菜单项
+					active: 'user',
+					// 指定脚本文件名
+					script: 'starPost.min.js',
+					categoriesKeys: [],
+					categories: {},
+					languages: [],
+					length: 0,
+					update_at: '',
+					charCodes: []
+				});
 			}
-			
-			// 计算各语言数量 并排序
-			var languages = _.chain(starItems).reduce(function (counts, starItem) {
-				counts[starItem.star.language] = (counts[starItem.star.language] || 0) + 1;
-				return counts;
-			}, {}).value();
-			var keys = _.keys(languages);
-			var values = _.toArray(languages);
-			keys = _.sortBy(keys, function (key) { return -languages[key]; });
-			values = values.sort(function (a, b) { return b - a; });
-			languages = _.object(keys, values);
-
-			var categories = _.groupBy(starItems, 'category');
-			var categoriesKeys = _.keys(categories);
-
-			// 未分类置前
-			categoriesKeys.sort();
-			var unClassified = '未分类';
-			var index = categoriesKeys.indexOf(unClassified);
-			if (index !== -1) {
-				categoriesKeys.splice(index, 1);
-				categoriesKeys.unshift(unClassified);
+			// 处理获取的数据
+			stars = JSON.parse(stars);
+			var callback = function (err) {
+				if (err) { console.log(err); }
+			};
+			for (var i = 0; i < stars.length; i++) {
+				var order = i;
+				StarItem.updateOrSave(user._id, stars[i], order, callback);
 			}
+			user.update_at = new Date();
+			user.save(function (err) {
+				if (err) { console.log(err); }
+			});
+			console.log('update success');
 
-			// 复制categoriesKeys一份副本，将所有字符串转为`字符编码-字符编码..`
-			// 某个分类 node 转换为 --> n的字符编码-o的字符编码-d的字符编码-e的字符编码
-			// 因为在html的id属性中，只能包含数字、字母、分号有限的字符
-			// 经过转义，可以对分类的id设置为分类的名称转义后的字符串
-			var charCodes = categoriesKeys.slice(0, categoriesKeys.length);
-			for (var i = 0; i < charCodes.length; i++) {
-				var name = charCodes[i];
-				var result = [];
-				for (var j = 0; j < name.length; j++) {
-					result.push(name.charCodeAt(j));
+			// 查找star item
+			StarItem.getByUserId(user._id, function (err, starItems) {
+				var length = starItems.length;
+				// 第一次注册的账号没有update_at
+				var update_at;
+				if (user.update_at) {
+					update_at = format_date(new Date(user.update_at), true);
+				} else {
+					update_at = '未更新';
 				}
-				charCodes[i] = result.join('-');
-			}
+				
+				// 计算各语言数量 并排序
+				var languages = _.chain(starItems).reduce(function (counts, starItem) {
+					counts[starItem.star.language] = (counts[starItem.star.language] || 0) + 1;
+					return counts;
+				}, {}).value();
+				var keys = _.keys(languages);
+				var values = _.toArray(languages);
+				keys = _.sortBy(keys, function (key) { return -languages[key]; });
+				values = values.sort(function (a, b) { return b - a; });
+				languages = _.object(keys, values);
 
-			res.render('mystars', {
-				// 指定active菜单项
-				active: 'user',
-				// 指定脚本文件名
-				script: 'starPost.min.js',
-				categoriesKeys: categoriesKeys,
-				categories: categories,
-				languages: languages,
-				length: length,
-				update_at: update_at,
-				charCodes: charCodes
+				var categories = _.groupBy(starItems, 'category');
+				var categoriesKeys = _.keys(categories);
+
+				// 未分类置前
+				categoriesKeys.sort();
+				var unClassified = '未分类';
+				var index = categoriesKeys.indexOf(unClassified);
+				if (index !== -1) {
+					categoriesKeys.splice(index, 1);
+					categoriesKeys.unshift(unClassified);
+				}
+
+				// 复制categoriesKeys一份副本，将所有字符串转为`字符编码-字符编码..`
+				// 某个分类 node 转换为 --> n的字符编码-o的字符编码-d的字符编码-e的字符编码
+				// 因为在html的id属性中，只能包含数字、字母、分号有限的字符
+				// 经过转义，可以对分类的id设置为分类的名称转义后的字符串
+				var charCodes = categoriesKeys.slice(0, categoriesKeys.length);
+				for (var i = 0; i < charCodes.length; i++) {
+					var name = charCodes[i];
+					var result = [];
+					for (var j = 0; j < name.length; j++) {
+						result.push(name.charCodeAt(j));
+					}
+					charCodes[i] = result.join('-');
+				}
+
+				res.render('mystars', {
+					// 指定active菜单项
+					active: 'user',
+					// 指定脚本文件名
+					script: 'starPost.min.js',
+					categoriesKeys: categoriesKeys,
+					categories: categories,
+					languages: languages,
+					length: length,
+					update_at: update_at,
+					charCodes: charCodes
+				});
 			});
 		});
 	});
@@ -147,39 +182,6 @@ exports.ajaxPost = function (req, res) {
 					remark: req.body.remark,
 					// tags: (typeof req.body.tags === 'object' ? req.body.tags.join(' ') : req.body.tags),
 					category: req.body.category
-				};
-				return res.send(JSON.stringify(message));
-			});
-		});
-	} else if (req.body.action === 'delete') {
-		// 删除操作
-		StarItem.getByUserIdAndStarID(req.session.user._id, Number(req.body.starid), function (err, starItem) {
-			if (err) {
-				message = {
-					status: false,
-					message: '数据库查询失败，请重新尝试！'
-				};
-				return res.send(JSON.stringify(message));
-			}
-			if (!starItem) {
-				message = {
-					status: false,
-					message: '数据库查无此项，删除失败！'
-				};
-				return res.send(JSON.stringify(message));
-			}
-			starItem.remove(function (err) {
-				if (err) {
-					message = {
-						status: false,
-						message: '数据库删除失败，请重新尝试！'
-					};
-					return res.send(JSON.stringify(message));
-				}
-				message = {
-					status: true,
-					message: '操作成功！',
-					starid: req.body.starid
 				};
 				return res.send(JSON.stringify(message));
 			});
