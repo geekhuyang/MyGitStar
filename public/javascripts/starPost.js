@@ -172,7 +172,7 @@ $(document).ready(function () {
 								}
 								var $success = $('<div class="row alert alert-success alert-dismissable"><button class="close" type="button" data-dismiss="alert" aria-hidden="true">&times;</button><p>更新成功</p></div>');
 								$success.prependTo($('.infoBox')[0]);
-								setTimeout(3000, function () { if ($success) { $success.remove(); } });
+								setTimeout(function () { if ($success) { $success.remove(); } }, 3000);
 							} else {
 								// 旧分类
 								var $oldCategory2 = $li.closest('div.tab-pane');
@@ -208,31 +208,31 @@ $(document).ready(function () {
 								}
 								var submitSuccess = $('<div class="row alert alert-success alert-dismissable"><button class="close" type="button" data-dismiss="alert" aria-hidden="true">&times;</button><p>更新成功</p></div>');
 								submitSuccess.prependTo($('.infoBox')[0]);
-								setTimeout(3000, function () { if (submitSuccess) { submitSuccess.remove(); } });
+								setTimeout(function () { if (submitSuccess) { submitSuccess.remove(); } }, 3000);
 							}
 						} else {
 							var $error = $('<div class="row alert alert-danger alert-dismissable"><button class="close" type="button" data-dismiss="alert" aria-hidden="true">&times;</button><p>找不到元素</p></div>');
 							$error.prependTo($('.infoBox')[0]);
-							setTimeout(3000, function () { if ($error) { $error.remove(); } });
+							setTimeout(function () { if ($error) { $error.remove(); } }, 3000);
 						}
 					} else {
 						// ajax失败 
 						var submitError = $('<div class="row alert alert-danger alert-dismissable"><button class="close" type="button" data-dismiss="alert" aria-hidden="true">&times;</button><p>' + data.message + '</p></div>');
 						submitError.prependTo($('.infoBox')[0]);
-						setTimeout(3000, function () { if (submitError) { submitError.remove(); } });
+						setTimeout(function () { if (submitError) { submitError.remove(); } }, 3000);
 					}
 				},
 				error: function () {
 					var $error = $('<div class="row alert alert-danger alert-dismissable"><button class="close" type="button" data-dismiss="alert" aria-hidden="true">&times;</button><p>更新超时</p></div>');
 					$error.prependTo($('.infoBox')[0]);
-					setTimeout(3000, function () { if ($error) { $error.remove(); } });
+					setTimeout(function () { if ($error) { $error.remove(); } }, 3000);
 				}
 			});
 		} else {
 			$('#myModal').modal('hide');
 			var show = $('<div class="row alert alert-danger alert-dismissable"><button class="close" type="button" data-dismiss="alert" aria-hidden="true">&times;</button><p>请等待上次操作反馈后再提交更新..</p></div>');
 			show.prependTo($('.infoBox')[0]);
-			setTimeout(3000, function () { if (show) { show.remove(); } });
+			setTimeout(function () { if (show) { show.remove(); } }, 3000);
 		}
 	});
 
