@@ -26,36 +26,36 @@ exports.index = function (req, res) {
 			return res.redirect('/signin');
 		}
 		// update from github
-		// myGit.getStars(user.githubUsername, function (err, stars) {
-		// 	if (err) {
-		// 		console.log('update from github error..');
-		// 		req.flash('error', '更新出错，请刷新页面！');
-		// 		res.render('mystars', {
-		// 			// 指定active菜单项
-		// 			active: 'user',
-		// 			// 指定脚本文件名
-		// 			script: 'starPost.min.js',
-		// 			categoriesKeys: [],
-		// 			categories: {},
-		// 			languages: [],
-		// 			length: 0,
-		// 			charCodes: []
-		// 		});
-		// 	}
-		// 	// 处理获取的数据
-		// 	stars = JSON.parse(stars);
-		// 	var callback = function (err) {
-		// 		if (err) { console.log(err); }
-		// 	};
-		// 	for (var i = 0; i < stars.length; i++) {
-		// 		var order = i;
-		// 		StarItem.updateOrSave(user._id, stars[i], order, callback);
-		// 	}
-		// 	user.update_at = new Date();
-		// 	user.save(function (err) {
-		// 		if (err) { console.log(err); }
-		// 	});
-		// 	console.log('update success');
+		myGit.getStars(user.githubUsername, function (err, stars) {
+			if (err) {
+				console.log('update from github error..');
+				req.flash('error', '更新出错，请刷新页面！');
+				res.render('mystars', {
+					// 指定active菜单项
+					active: 'user',
+					// 指定脚本文件名
+					script: 'starPost.min.js',
+					categoriesKeys: [],
+					categories: {},
+					languages: [],
+					length: 0,
+					charCodes: []
+				});
+			}
+			// 处理获取的数据
+			stars = JSON.parse(stars);
+			var callback = function (err) {
+				if (err) { console.log(err); }
+			};
+			for (var i = 0; i < stars.length; i++) {
+				var order = i;
+				StarItem.updateOrSave(user._id, stars[i], order, callback);
+			}
+			user.update_at = new Date();
+			user.save(function (err) {
+				if (err) { console.log(err); }
+			});
+			console.log('update success');
 
 			// 查找star item
 			StarItem.getByUserId(user._id, function (err, starItems) {
@@ -109,7 +109,7 @@ exports.index = function (req, res) {
 					length: length,
 					charCodes: charCodes
 				});
-			// });
+			});
 		});
 	});
 };

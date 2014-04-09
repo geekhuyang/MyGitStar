@@ -42,11 +42,11 @@ $(document).ready(function () {
 		$myModal.find('.modal-language').text($li.find('.star-language').text());
 		$myModal.find('.modal-starNum').text($li.attr('data-starNum'));
 		$myModal.find('.modal-forkNum').text($li.attr('data-forkNum'));
-		$myModal.find('.modal-repoId').text('ID: ' + $li.attr('data-id'));
+		// $myModal.find('.modal-repoId').text('ID: ' + $li.attr('data-id'));
 		$myModal.find('.modal-description').text(description);
 		$myModal.find('.modal-htmlurl').attr({'href': $li.attr('data-htmlurl')});
 		// $myModal.find('.modal-readme').attr({'href': '/readme?author=' + owner + '&repo=' + text});
-		$myModal.find('.modal-size').text($li.attr('data-size') + 'KB');
+		// $myModal.find('.modal-size').text($li.attr('data-size') + 'KB');
 		$myModal.find('#readmeBtn').attr({
 			'href': '/readme?author=' + owner + '&repo=' + text,
 			'data-target': '#readme-' + $li.attr('data-id')
