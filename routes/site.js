@@ -46,7 +46,7 @@ exports.report = function (req, res) {
 			req.flash('error', error.message);
 			res.render('report');
 		}
-		users = _.sortBy(users, function (user) { return num.visit; });
+		users = _.sortBy(users, function (user) { return user.visit; });
 		res.render('report', {
 			users: users,
 			format_date: format_date
