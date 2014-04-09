@@ -12,17 +12,6 @@ $(document).ready(function () {
 		$('#' + active).addClass('active');
 	}
 
-	// auto remove
-	var autoremove = function (entry, timeout) {
-		if (entry) {
-			setTimeout(function () {
-				if (entry) {
-					entry.animate({ opacity: 0, height: 0 }, 1000, function () { if (entry) { entry.remove(); }});
-				}
-			}, timeout);
-		}
-	};
-
 	// 备注提示
 	$('.tab-content').mouseover(function (e) {
 		$(e.target).closest('li').tooltip('show');
@@ -56,8 +45,12 @@ $(document).ready(function () {
 		$myModal.find('.modal-repoId').text('ID: ' + $li.attr('data-id'));
 		$myModal.find('.modal-description').text(description);
 		$myModal.find('.modal-htmlurl').attr({'href': $li.attr('data-htmlurl')});
-		$myModal.find('.modal-readme').attr({'href': '/readme?author=' + owner + '&repo=' + text});
+		// $myModal.find('.modal-readme').attr({'href': '/readme?author=' + owner + '&repo=' + text});
 		$myModal.find('.modal-size').text($li.attr('data-size') + 'KB');
+		$myModal.find('#readmeBtn').attr({
+			'href': '/readme?author=' + owner + '&repo=' + text,
+			'data-target': '#readme-' + $li.attr('data-id')
+		});
 		// 表单数据
 		var category = $li.attr('data-category');
 		$myModal.find('.modal-category input').text(category);
@@ -119,11 +112,23 @@ $(document).ready(function () {
 		});
 	});
 
+	// auto remove
+	var autoremove = function (entry, timeout) {
+		if (entry) {
+			setTimeout(function () {
+				if (entry) {
+					entry.animate({ opacity: 0, height: 0 }, 1000, function () { if (entry) { entry.remove(); }});
+				}
+			}, timeout);
+		}
+	};
+
 	// 表单处理
 	$('#myModal form').submit(function (event) {
 		event.preventDefault();
 		var requestData = $(this).serialize();
 		requestData += '&action=update';
+		console.log(requestData);
 		if (!isUpdating) {
 			$.ajax({
 				type: 'POST',
@@ -131,6 +136,7 @@ $(document).ready(function () {
 				url: '/ajaxPost',
 				data: requestData,
 				success: function (data) {
+					isUpdating = false;
 					data = JSON.parse(data);
 					// ajax成功
 					if (data.status) {
@@ -235,11 +241,14 @@ $(document).ready(function () {
 					}
 				},
 				error: function () {
+					isUpdating = false;
 					var $error = $('<div class="row alert alert-danger alert-dismissable"><button class="close" type="button" data-dismiss="alert" aria-hidden="true">&times;</button><p>更新超时</p></div>');
 					$error.prependTo($('.infoBox')[0]);
 					autoremove($error, removeTimeout);
 				}
 			});
+			isUpdating = true;
+			$('#myModal').modal('hide');
 		} else {
 			$('#myModal').modal('hide');
 			var show = $('<div class="row alert alert-danger alert-dismissable"><button class="close" type="button" data-dismiss="alert" aria-hidden="true">&times;</button><p>请等待上次操作反馈后再提交更新..</p></div>');
@@ -248,16 +257,45 @@ $(document).ready(function () {
 		}
 	});
 
+	// readnme 按钮
+	$('#readmeBtn').click(function (event) {
+		// event.preventDefault();
+		var $modal = $(this).closest('.modal');
+		var id = $modal.find('.modal-id').val();
+		console.log('id: ', id);
+		$('#myModal').modal('hide');
+		// 是否已经缓存过readme页面
+		if ($('#readme-' + id).length) {
+			console.log('exist');
+			$('#readme-' + id).modal('show');
+		} else {
+			console.log('create');
+			var modal = $('<div id="readme-' + id + '" class="modal fade"></div>');
+			var modalDialog = $('<div class="modal-dialog"></div>');
+			var modalContent = $('<div class="modal-content"></div>');
+			var modalHeader = $('<div class="modal-header"></div>');
+			var button = $('<button class="close" type="button" data-dismiss="modal" aria-hidden="true">&times;</button>');
+			var p = $('<p class="modal-title">加载中..</p>');
+			var modalFooter = $('<div class="modal-footer"></div>');
+
+			button.appendTo(modalHeader);
+			p.appendTo(modalHeader);
+			modalHeader.appendTo(modalContent);
+			modalFooter.appendTo(modalContent);
+			modalContent.appendTo(modalDialog);
+			modalDialog.appendTo(modal);
+			modal.appendTo($('#container')[0]);
+			// modal.modal('show');
+			$('#readme-' + id).modal({'remote':$(this).attr('href')});
+		}
+	});
+
 	// ajax事件提示
 	$(document).ajaxStart(function () {
-		var $loading = $('<div id="loading-info" class="row alert alert-info alert-dismissable"><button class="close" type="button" data-dismiss="alert" aria-hidden="true">&times;</button><p>正在更新，等待服务器反馈..</p></div>');
+		var $loading = $('<div id="loading-info" class="row alert alert-info alert-dismissable"><button class="close" type="button" data-dismiss="alert" aria-hidden="true">&times;</button><p>请等待服务器反馈..</p></div>');
 		$loading.prependTo($('.infoBox')[0]);
-		console.log('loading');
-		isUpdating = true;
-		$('#myModal').modal('hide');
+		autoremove($loading, removeTimeout);
 	}).ajaxStop(function () {
-		$('#loading-info').remove();
-		console.log('done');
-		isUpdating = false;
+		if ($('#loading-info').length) { $('#loading-info').remove(); }
 	});
 });

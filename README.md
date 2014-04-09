@@ -107,6 +107,7 @@ build命令
 3. 修改数据库，将star和owner schema内嵌到staritem中，建立索引
 4. 添加测试
 5. 添加 to-read 功能？或者邮箱提醒功能？
+6. 快速分类
 
 ## history
 

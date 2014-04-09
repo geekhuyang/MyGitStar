@@ -235,6 +235,10 @@ h1 {
 	font-size: 2em;
 	padding-bottom: .5em;
 }
+.modal-footer-title {
+	font-size: 1.5em;
+	padding-bottom: .5em;
+}
 .modal-description {
 	font-size: 1.3em;
 	color: #888;
@@ -248,8 +252,7 @@ h1 {
 	padding-right: 1em;
 }
 .modal-body {
-	padding: 1em;
-	padding-top: .5em;
+	padding: .5em 1em 0 1em;
 	margin: 0;
 }
 
@@ -325,9 +328,9 @@ footer {
 
 /* readme */
 .readme {
-	width: 60%;
+	/*width: 100%;*/
 	margin: 0 auto;
-	box-shadow: #ccc 0 1px 4px 1px;
+	/*box-shadow: #ccc 0 1px 4px 1px;*/
 }
 
 @media (max-width: 1200px) {
@@ -341,9 +344,6 @@ footer {
 	}
 	section#main.col-sm-9 {
 		width: 65%;
-	}
-	.readme {
-		width: 80%;
 	}
 }
 @media (max-width: 768px) {
@@ -387,8 +387,5 @@ footer {
 	/* nav pills */
 	.nav-pills > li > a {
 		padding: 5px 4px;
-	}
-	.readme {
-		width: 96%;
 	}
 }

@@ -17,12 +17,6 @@ block content
 									span
 										i.fa.fa-github.fa-lg &nbsp;
 										| #{user.githubUsername}
-								- else
-									div.alert.alert-danger.alert-dismissable
-										button.close(type='button', data-dismiss='alert', aria-hidden='true') &times;
-										strong 请先在
-											a.text-success(href='/setting',style='text-decoration:underline') 设置
-											| 里设置您的Github账号
 								- if (length)
 									span 
 										i.fa.fa-star.fa-lg &nbsp;
@@ -109,15 +103,11 @@ block content
 						span.modal-starNum
 						i.fa.fa-code-fork.fa-lg &nbsp;
 						span.modal-forkNum
-					p.modal-info
 						i.fa.fa-code.fa-lg &nbsp;
 						span.modal-language
 						i.fa.fa-link.fa-lg &nbsp;
 						span
 							a.modal-htmlurl link
-						i.fa.fa-rocket.fa-lg &nbsp;
-						span
-							a.modal-readme(target='_blank') readme
 					p.modal-info.hidden
 						//- i.fa.fa-file.fa-lg &nbsp;
 						span.hidden.modal-size
@@ -129,12 +119,13 @@ block content
 						div.input-group.modal-category.col-sm-4
 							span.input-group-addon 分类
 							input.form-control(name='category', type='text', placeholder='分类')
-						//- div.input-group.modal-tags.col-sm-6
-						//- 	span.input-group-addon 标签(用空格分隔)
-						//- 	input.form-control(name='tags', type='text', placeholder='标签')
 						div.input-group.modal-remark
 							span.input-group-addon 备注
 							textarea.form-control(name='remark', row='2', placeholder='添加备注')
+						//- div.input-group.modal-tags.col-sm-6
+						//- 	span.input-group-addon 标签(用空格分隔)
+						//- 	input.form-control(name='tags', type='text', placeholder='标签')
 					div.modal-footer
 						button.btn.btn-default(type="button", data-dismiss="modal") 关闭
+						a#readmeBtn.btn.btn-success(data-toggle="modal", href='#') 查看readme
 						button#submitBtn.btn.btn-primary(type="submit") 保存

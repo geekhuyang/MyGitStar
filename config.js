@@ -19,7 +19,7 @@ var config = {
   //   callbackURL: 'http://127.0.0.1:5000/auth/github/callback',
   // },
 
-  // // production 模式
+  // production 模式
   debug: false, // 关闭debug
   host: 'mygitstar.herokuapp.com',
   update_interval: 1000 * 60 * 5, // 限制用户更新频率，默认5分钟

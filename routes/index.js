@@ -30,7 +30,7 @@ module.exports = function (app) {
 	// mystars
 	app.post('/ajaxPost', mystars.ajaxPost);
 	app.get('/mystar', mystars.index);
-	app.post('/ajaxUpdateFromGithub', mystars.ajaxUpdateFromGithub);
+	// app.post('/ajaxUpdateFromGithub', mystars.ajaxUpdateFromGithub);
 	app.get('/readme', mystars.readme);
 };
 

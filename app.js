@@ -25,7 +25,7 @@ var app = express();
 // view engine setup --- jade模板引擎
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
-app.set('view cache', true);
+// app.set('view cache', true);
 
 app.use(favicon());
 
@@ -81,7 +81,7 @@ var routes = require('./routes');
 routes(app);
 
 /// error handlers
-if (config.debug) {
+if (!config.debug) {
 	app.use(function (err, req, res, next) {
 		var meta = '[' + moment(new Date()).format('LLL') + '] ' + req.url + '\n';
 		errorLogfile.write(meta + err.stack + '\n');

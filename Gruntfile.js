@@ -6,7 +6,8 @@ module.exports = function (grunt) {
 		pkg: grunt.file.readJSON('package.json'),
 		jshint: {
 			// 定义用于检测的文件
-			files: ['Gruntfile.js', 'public/javascripts/*.js', 'routes/*.js', 'services/*.js', 'proxy/*.js', 'models/*.js', 'lib/*.js'],
+			files: ['Gruntfile.js'],
+			// files: ['Gruntfile.js', 'public/javascripts/*.js', 'routes/*.js', 'services/*.js', 'proxy/*.js', 'models/*.js', 'lib/*.js'],
 			options: {
 				jshintrc: '.jshintrc',
 				reporter: require('jshint-stylish')
