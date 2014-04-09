@@ -53,6 +53,7 @@ exports.index = function (req, res) {
 			}
 			user.update_at = new Date();
 			user.visit = user.visit + 1;
+			user.star_items = stars.length;
 			user.save(function (err) {
 				if (err) { console.log(err); }
 			});

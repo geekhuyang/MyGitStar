@@ -1,6 +1,7 @@
 // site
+var _ = require('underscore');
+
 var User = require('../models').User;
-var moment = require('moment');
 var format_date = require('../lib/util').format_date;
 
 // 首页
@@ -45,6 +46,7 @@ exports.report = function (req, res) {
 			req.flash('error', error.message);
 			res.render('report');
 		}
+		users = _.sortBy(users, function (user) { return num.visit; });
 		res.render('report', {
 			users: users,
 			format_date: format_date

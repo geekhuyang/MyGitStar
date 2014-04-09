@@ -9,6 +9,7 @@ var UserSchema = new Schema({
 	url: { type: String },
 	githubId: { type: String, index: true },
 	githubUsername: { type: String },
+	star_items: { type: Number, default: 0 },
 	
 	weibo: { type: String },
 

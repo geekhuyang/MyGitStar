@@ -13,7 +13,8 @@ block content
 					td # Github
 					td # create time
 					td # 最近更新
-					td # 访问次数
+					td # 更新次数
+					td # star数量
 			- if (users)
 				tbody
 				- for (var i = 0; i < users.length; i++)
@@ -22,3 +23,4 @@ block content
 						td #{format_date(users[i].create_at, true)}
 						td #{format_date(users[i].update_at, true)}
 						td #{users[i].visit}
+						td #{users[i].star_items}

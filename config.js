@@ -45,7 +45,7 @@ var config = {
   auth_cookie_name: 'my_git_star', // cookie name
   maxAge: 3600000 * 24 * 30, // cookie 有效期
 
-  admins: { Sidong: true }, // admin 管理员账号
+  admins: { Sidong: true, jackyzh: true }, // admin 管理员账号
 
   // // mail SMTP
   // mail_opts: {
