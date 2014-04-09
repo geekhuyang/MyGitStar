@@ -106,7 +106,7 @@ if (!module.parent) {
 		console.log('-----------------------------------------------------');
 		console.log(config.name);
 		console.log("Express server listening on port %d in %s mode", port, app.settings.env);
-  	console.log("You can debug your app with http://" + config.host);
+  	console.log("You can debug your app with " + config.host);
 		console.log('-----------------------------------------------------');
 	});
 }

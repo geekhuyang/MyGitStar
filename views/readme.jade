@@ -1,11 +1,8 @@
 block content
 	div.readme
-		p.readme-title.text-primary
+		p.readme-title.text-muted
 			i.fa.fa-github.fa-lg &nbsp;
-			| #{author} 
-			span.text-muted / 
-			| #{repo}
-		// != md.toHTML(contents)
+			| #{author} / #{repo}
 		if contents
 			!= marked(contents)
 		else

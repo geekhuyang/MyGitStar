@@ -117,7 +117,7 @@ $(document).ready(function () {
 		if (entry) {
 			setTimeout(function () {
 				if (entry) {
-					entry.animate({ opacity: 0, height: 0 }, 1000, function () { if (entry) { entry.remove(); }});
+					entry.animate({ opacity: 0 }, 300, function () { if (entry) { entry.remove(); }});
 				}
 			}, timeout);
 		}
@@ -259,7 +259,7 @@ $(document).ready(function () {
 
 	// readnme 按钮
 	$('#readmeBtn').click(function (event) {
-		// event.preventDefault();
+		event.preventDefault();
 		var $modal = $(this).closest('.modal');
 		var id = $modal.find('.modal-id').val();
 		console.log('id: ', id);
@@ -285,8 +285,7 @@ $(document).ready(function () {
 			modalContent.appendTo(modalDialog);
 			modalDialog.appendTo(modal);
 			modal.appendTo($('#container')[0]);
-			// modal.modal('show');
-			$('#readme-' + id).modal({'remote':$(this).attr('href')});
+			modal.modal({'remote': $(this).attr('href')});
 		}
 	});
 

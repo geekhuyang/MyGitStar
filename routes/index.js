@@ -8,11 +8,12 @@ var github = require('./github');
 
 module.exports = function (app) {
 	"use strict";
-	// home page
+	// site page
 	app.get('/', site.index);
 	app.get('/home', site.index);
 	app.get('/about', site.about);
 	app.get('/404', site.site404);
+	app.get('/report', site.report);
 
 	// signin/signout
 	app.get('/signin', sign.showSignin);

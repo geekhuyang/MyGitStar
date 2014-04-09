@@ -25,37 +25,38 @@ exports.index = function (req, res) {
 			req.flash('error', '会话失效，重新登入！');
 			return res.redirect('/signin');
 		}
-		// update from github
-		myGit.getStars(user.githubUsername, function (err, stars) {
-			if (err) {
-				console.log('update from github error..');
-				req.flash('error', '更新出错，请刷新页面！');
-				res.render('mystars', {
-					// 指定active菜单项
-					active: 'user',
-					// 指定脚本文件名
-					script: 'starPost.min.js',
-					categoriesKeys: [],
-					categories: {},
-					languages: [],
-					length: 0,
-					charCodes: []
-				});
-			}
-			// 处理获取的数据
-			stars = JSON.parse(stars);
-			var callback = function (err) {
-				if (err) { console.log(err); }
-			};
-			for (var i = 0; i < stars.length; i++) {
-				var order = i;
-				StarItem.updateOrSave(user._id, stars[i], order, callback);
-			}
-			user.update_at = new Date();
-			user.save(function (err) {
-				if (err) { console.log(err); }
-			});
-			console.log('update success');
+		// // update from github
+		// myGit.getStars(user.githubUsername, function (err, stars) {
+		// 	if (err) {
+		// 		console.log('update from github error..');
+		// 		req.flash('error', '更新出错，请刷新页面！');
+		// 		res.render('mystars', {
+		// 			// 指定active菜单项
+		// 			active: 'user',
+		// 			// 指定脚本文件名
+		// 			script: 'starPost.min.js',
+		// 			categoriesKeys: [],
+		// 			categories: {},
+		// 			languages: [],
+		// 			length: 0,
+		// 			charCodes: []
+		// 		});
+		// 	}
+		// 	// 处理获取的数据
+		// 	stars = JSON.parse(stars);
+		// 	var callback = function (err) {
+		// 		if (err) { console.log(err); }
+		// 	};
+		// 	for (var i = 0; i < stars.length; i++) {
+		// 		var order = i;
+		// 		StarItem.updateOrSave(user._id, stars[i], order, callback);
+		// 	}
+		// 	user.update_at = new Date();
+		// 	user.visit += 1;
+		// 	user.save(function (err) {
+		// 		if (err) { console.log(err); }
+		// 	});
+		// 	console.log('update success');
 
 			// 查找star item
 			StarItem.getByUserId(user._id, function (err, starItems) {
@@ -109,7 +110,7 @@ exports.index = function (req, res) {
 					length: length,
 					charCodes: charCodes
 				});
-			});
+			// });
 		});
 	});
 };
@@ -253,6 +254,7 @@ exports.ajaxUpdateFromGithub = function (req, res) {
 
 // get readme
 exports.readme = function (req, res) {
+	"use strict";
 	var query = url.parse(req.url).query;
 	var params = qs.parse(query);
 	var client = github.client();
@@ -264,7 +266,7 @@ exports.readme = function (req, res) {
 				author: params.author,
 				repo: params.repo,
 				contents: '',
-				error: err.message
+				error: 'Error: ' + err.message
 			});
 		}
 		var contents = body.content;
@@ -277,32 +279,3 @@ exports.readme = function (req, res) {
 		});
 	});
 };
-
-// get readme
-// exports.ajaxReadme = function (req, res) {
-// 	"use strict";
-// 	if (!req.session.user) {
-		
-// 	}
-// 	var query = url.parse(req.url).query;
-// 	var params = qs.parse(query);
-// 	var client = github.client();
-// 	var apiurl = '/repos/' + params.author + '/' + params.repo + '/readme';
-// 	console.log(apiurl);
-// 	client.get('/repos/' + params.author + '/' + params.repo + '/readme', {}, function (err, status, body) {
-// 		if (err) {
-// 			req.flash('error', err.message);
-// 			return res.redirect('/');
-// 		}
-// 		var contents = body.content;
-// 		contents = util.utf8to16(util.base64decode(contents));
-// 		res.render('readme', {
-// 			script: 'main.min.js',
-// 			active: '',
-// 			author: params.author,
-// 			repo: params.repo,
-// 			contents: contents,
-// 			md: md
-// 		});
-// 	});
-// };

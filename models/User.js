@@ -10,13 +10,11 @@ var UserSchema = new Schema({
 	githubId: { type: String, index: true },
 	githubUsername: { type: String },
 	
-	location: { type: String },
-	signature: { type: String },
-	profile: { type: String },
 	weibo: { type: String },
 
 	create_at: { type: Date, default: Date.now },
-	update_at: { type: Date }
+	update_at: { type: Date },
+	visit: { type: Number, default: 1 }
 });
 
 exports.UserSchema = UserSchema;

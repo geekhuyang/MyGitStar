@@ -1,0 +1,24 @@
+extends layout
+
+block content
+	div.col-sm-3
+		div.panel.panel-primary
+			div.panel-heading 统计信息
+			- if (users)
+				div.panel-body 用户总数 #{users.length}
+	div.col-sm-9
+		table.table.table-hover
+			thead
+				tr.success
+					td # Github
+					td # create time
+					td # 最近更新
+					td # 访问次数
+			- if (users)
+				tbody
+				- for (var i = 0; i < users.length; i++)
+					tr
+						td @#{users[i].name}
+						td #{format_date(users[i].create_at, true)}
+						td #{format_date(users[i].update_at, true)}
+						td #{users[i].visit}

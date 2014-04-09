@@ -65,29 +65,3 @@ exports.getUsersByQuery = function (query, opt, callback) {
 	"use strict";
 	User.find(query, '', opt, callback);
 };
-
-/**
- * 根据查询条件，获取一个用户
- * Callback:
- * - err, 数据库异常
- * - user, 用户
- * @param {String} name 用户名
- * @param {String} key 激活码
- * @param {Function} callback 回调函数
- */
-exports.getUserByQuery = function (name, key, callback) {
-	"use strict";
-	User.findOne({name: name, retrieve_key: key}, callback);
-};
-
-exports.newAndSave = function (name, loginname, pass, email, active, callback) {
-	"use strict";
-	var user = new User();
-	user.name = name;
-	user.loginname = loginname;
-	user.pass = pass;
-	user.email = email;
-	// user.avatar = avatar_url;
-	user.active = false;
-	user.save(callback);
-};
