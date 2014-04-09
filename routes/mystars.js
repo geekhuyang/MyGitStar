@@ -57,7 +57,6 @@ exports.index = function (req, res) {
 			user.save(function (err) {
 				if (err) { console.log(err); }
 			});
-			console.log('update success');
 
 			// 查找star item
 			StarItem.getByUserId(user._id, function (err, starItems) {

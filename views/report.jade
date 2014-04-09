@@ -4,17 +4,20 @@ block content
 	div.col-sm-3
 		div.panel.panel-primary
 			div.panel-heading 统计信息
-			- if (users)
-				div.panel-body 用户总数 #{users.length}
+			div.panel-body
+				- if (users)
+					p.report-item 用户总数 <span class="badge">#{users.length}</span>
+				- if (count)
+					p.report-item star总数  <span class="badge">#{count}</span>
 	div.col-sm-9
 		table.table.table-hover
 			thead
 				tr.success
 					td # Github
-					td # create time
+					td # 创建时间
 					td # 最近更新
 					td # 更新次数
-					td # star数量
+					td # star数
 			- if (users)
 				tbody
 				- for (var i = 0; i < users.length; i++)

@@ -279,7 +279,7 @@ h1 {
 #container {
 	margin-top: 0;
 	margin-bottom: 0;
-	padding-top: 50px;
+	padding-top: 30px;
 }
 
 /* about */
@@ -333,6 +333,11 @@ footer {
 	/*box-shadow: #ccc 0 1px 4px 1px;*/
 }
 
+/* report */
+.report-item {
+	font-size: 1.3em;
+}
+
 @media (max-width: 1200px) {
 	.container {
 		width: 96%;
@@ -348,10 +353,11 @@ footer {
 }
 @media (max-width: 768px) {
 	h1.lead {
-		font-size: 2em;
+		margin: 0;
+		font-size: 4em;
 	}
 	h2.lead {
-		font-size: 1.2em;
+		font-size: 1em;
 	}
 	#user > ul.dropdown-menu {
 		display: block;
@@ -387,5 +393,10 @@ footer {
 	/* nav pills */
 	.nav-pills > li > a {
 		padding: 5px 4px;
+	}
+}
+@media (max-width: 500px) {
+	h1.lead {
+		font-size: 2.5em;
 	}
 }

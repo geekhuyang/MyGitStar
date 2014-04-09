@@ -2,6 +2,7 @@
 var _ = require('underscore');
 
 var User = require('../models').User;
+var StarItem = require('../models').StarItem;
 var format_date = require('../lib/util').format_date;
 
 // 首页
@@ -46,10 +47,14 @@ exports.report = function (req, res) {
 			req.flash('error', error.message);
 			res.render('report');
 		}
-		users = _.sortBy(users, function (user) { return user.visit; });
-		res.render('report', {
-			users: users,
-			format_date: format_date
+		users = _.sortBy(users, function (user) { return -user.visit; });
+		StarItem.count({}, function (err, count) {
+			if (err) { count = 0; }
+			res.render('report', {
+				users: users,
+				format_date: format_date,
+				count: count
+			});
 		});
 	});
 }
