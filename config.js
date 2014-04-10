@@ -31,15 +31,14 @@ var config = {
   debug: false, // 关闭debug
   host: 'http://xxooxx.herokuapp.com',
   port: 5000,
-  db: 'mongodb://mygitstar:sisi6612683@oceanic.mongohq.com:10010/mygitstar',
-  // db: 'mongodb://admin:admin@oceanic.mongohq.com:10053/xxooxx',
+  // db: 'mongodb://mygitstar:sisi6612683@oceanic.mongohq.com:10010/mygitstar',
+  db: 'mongodb://admin:admin@oceanic.mongohq.com:10053/xxooxx',
   GITHUB_OAUTH: { // github oauth
     clientID: '42a442ef951d2bd52f45',
     clientSecret: '5839ecc6563c7dc474f7c303cfae4346ae0fc2dd',
     callbackURL: 'http://xxooxx.herokuapp.com/auth/github/callback',
   },
 
-  hostname: 'herokuapp.com',
   google_tracker_id: 'UA-49713351-1',
 
   session_secret: 'my_git_star', // session secret
