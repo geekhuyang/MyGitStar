@@ -41,8 +41,8 @@ exports.report = function (req, res) {
 		req.flash('error', '请登录！');
 		return res.redirect('/signin');
 	}
-	// if (!config.admins.hasOwnProperty(req.session.user.name)) {
-	if (!req.session.user.is_admin) {
+	if (!config.admins.hasOwnProperty(req.session.user.name)) {
+	// if (!req.session.user.is_admin) {
 		return res.redirect('/404');
 	}
 	User.find({}, function (err, users) {
