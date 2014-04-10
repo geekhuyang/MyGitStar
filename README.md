@@ -100,16 +100,25 @@ build命令
 
 ## TODO
 
-1. 添加readme，并用合适的方法呈现
-	* 路由规则 /readme?author=Sidong&repo=my-impress
+1. ~~添加readme，并用合适的方法呈现~~
+	* ~~路由规则 /readme?author=Sidong&repo=my-impress~~
 2. 增加admin功能
 	* 查看用户/用户数量/站点数据
 3. 修改数据库，将star和owner schema内嵌到staritem中，建立索引
 4. 添加测试
 5. 添加 to-read 功能？或者邮箱提醒功能？
 6. 快速分类
+7. 建议
+	* 还有个建议，就是点进去某个项目之后点了备注和分类输入的时候要先删除无备注几个字
+	* 写了 placeholder 再写 value 就多余了吧
+	* My Star 可以移到 [首页] 和 [关于]一个 level
+	* [未分类] 和 [无备注] 可不可以搞成 placeholder，否则还要先清空
 
 ## history
+
+### 0.2.2 / 2014-04-10
+
+1. 添加admin查看app数据统计页面
 
 ### 0.2.2 / 2014-04-08
 
