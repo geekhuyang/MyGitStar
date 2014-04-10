@@ -25,6 +25,10 @@ exports.index = function (req, res) {
 			req.flash('error', '会话失效，重新登入！');
 			return res.redirect('/signin');
 		}
+		if (!user) {
+			req.flash('error', '会话失效，重新登入！');
+			return res.redirect('/signin');
+		}
 		// update from github
 		myGit.getStars(user.githubUsername, function (err, stars) {
 			if (err) {
