@@ -91,7 +91,7 @@ if (!config.debug) {
 
 // 404
 app.use(function (req, res) {
-	res.redirect('/404');
+	return res.redirect('/404');
 });
 
 // 禁止被加载自启动

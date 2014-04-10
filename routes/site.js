@@ -42,9 +42,9 @@ exports.report = function (req, res) {
 		return res.redirect('/signin');
 	}
 	// if (!config.admins.hasOwnProperty(req.session.user.name)) {
-	// if (!req.session.user.is_admin) {
-		// return res.redirect('/404');
-	// }
+	if (!req.session.user.is_admin) {
+		return res.redirect('/404');
+	}
 	User.find({}, function (err, users) {
 		if (err) {
 			req.flash('error', error.message);
