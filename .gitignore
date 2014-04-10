@@ -1,4 +1,7 @@
 # config.js
+
+dbControl.js
+
 .cov
 node_modules
 .naeindex
