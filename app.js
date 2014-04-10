@@ -90,9 +90,9 @@ if (!config.debug) {
 }
 
 // 404
-// app.use(function (req, res) {
-// 	return res.redirect('/404');
-// });
+app.use(function (req, res) {
+	return res.redirect('/404');
+});
 
 // 禁止被加载自启动
 // 这个语句的功能是判断当前模块是不是由其他模块调用的

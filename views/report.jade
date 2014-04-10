@@ -23,7 +23,13 @@ block content
 				- for (var i = 0; i < users.length; i++)
 					tr
 						td @#{users[i].name}
-						td #{format_date(users[i].create_at, true)}
-						td #{format_date(users[i].update_at, true)}
+						if (users[i].create_at)
+							td #{format_date(users[i].create_at, true)}
+						else
+							td 未知
+						if (users[i].update_at)
+							td #{format_date(users[i].update_at, true)}
+						else
+							td 未知
 						td #{users[i].visit}
 						td #{users[i].star_items}

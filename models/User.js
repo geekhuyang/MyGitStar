@@ -14,7 +14,7 @@ var UserSchema = new Schema({
 	weibo: { type: String },
 
 	create_at: { type: Date, default: Date.now },
-	update_at: { type: Date },
+	update_at: { type: Date, default: Date.now },
 	visit: { type: Number, default: 1 }
 });
 
