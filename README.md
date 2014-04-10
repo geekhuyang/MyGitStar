@@ -2,7 +2,7 @@
 
 git clone
 
-	git clone git@github.com:Sidong/MyGitStar.git
+	git clone https://github.com/Sidong/MyGitStar.git
 
 首先确保机子已经安装了 `node` ，可通过 `homebrew` 安装。  
 
