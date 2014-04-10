@@ -4,6 +4,7 @@ var _ = require('underscore');
 var User = require('../models').User;
 var StarItem = require('../models').StarItem;
 var format_date = require('../lib/util').format_date;
+var config = require('../config').config;
 
 // 首页
 exports.index = function (req, res) {
@@ -40,7 +41,7 @@ exports.report = function (req, res) {
 		req.flash('error', '请登录！');
 		return res.redirect('/signin');
 	}
-	if (!req.session.user.is_admin) {
+	if (!config.admins.hasOwnProperty(req.session.user.name)) {
 		return res.redirect('/404');
 	}
 	User.find({}, function (err, users) {

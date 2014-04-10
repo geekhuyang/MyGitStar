@@ -46,6 +46,7 @@ exports.auth_user = function (req, res, next) {
 			if (user) {
 				if (config.admins.hasOwnProperty(user.name)) {
 					user.is_admin = true;
+					console.log('cookie --> admin');
 				}
 				req.session.user = user;
 				res.locals.current_user =  req.session.user;
