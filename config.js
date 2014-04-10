@@ -28,7 +28,7 @@ var config = {
   // },
 
   // // production 模式 xxooxx app
-  debug: false, // 关闭debug
+  debug: true, // 关闭debug
   host: 'http://xxooxx.herokuapp.com',
   port: 5000,
   db: 'mongodb://mygitstar:sisi6612683@oceanic.mongohq.com:10010/mygitstar',
