@@ -31,8 +31,8 @@ var config = {
   debug: false, // 关闭debug
   host: 'http://xxooxx.herokuapp.com',
   port: 5000,
-  // db: 'mongodb://mygitstar:sisi6612683@oceanic.mongohq.com:10010/mygitstar',
-  db: 'mongodb://admin:admin@oceanic.mongohq.com:10053/xxooxx',
+  db: 'mongodb://mygitstar:sisi6612683@oceanic.mongohq.com:10010/mygitstar',
+  // db: 'mongodb://admin:admin@oceanic.mongohq.com:10053/xxooxx',
   GITHUB_OAUTH: { // github oauth
     clientID: '42a442ef951d2bd52f45',
     clientSecret: '5839ecc6563c7dc474f7c303cfae4346ae0fc2dd',
