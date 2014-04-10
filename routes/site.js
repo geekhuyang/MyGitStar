@@ -4,7 +4,7 @@ var _ = require('underscore');
 var User = require('../models').User;
 var StarItem = require('../models').StarItem;
 var format_date = require('../lib/util').format_date;
-var config = require('../config').config;
+// var config = require('../config').config;
 
 // 首页
 exports.index = function (req, res) {
@@ -42,9 +42,9 @@ exports.report = function (req, res) {
 		return res.redirect('/signin');
 	}
 	// if (!config.admins.hasOwnProperty(req.session.user.name)) {
-	if (!req.session.user.is_admin) {
-		return res.redirect('/404');
-	}
+	// if (!req.session.user.is_admin) {
+		// return res.redirect('/404');
+	// }
 	User.find({}, function (err, users) {
 		if (err) {
 			req.flash('error', error.message);
