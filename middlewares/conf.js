@@ -25,6 +25,7 @@ exports.auth_user = function (req, res, next) {
 		// console.log('login by session');
 		if (config.admins.hasOwnProperty(req.session.user.name)) {
 			req.session.user.is_admin = true;
+			console.log('You are admin!');
 		}
 		res.locals.current_user = req.session.user;
 		return next();

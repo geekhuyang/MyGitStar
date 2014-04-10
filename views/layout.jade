@@ -42,10 +42,11 @@ html
 									| #{user.name}&nbsp;
 									span.caret
 								ul.dropdown-menu(role='menu', aria-labelledby='dropBtn')
-									li(role='presentation')
-										a(href='/report', tabindex='-1', role='menuitem')
-											i.fa.fa-search
-											| &nbsp;App Report
+									if user.is_admin
+										li(role='presentation')
+											a(href='/report', tabindex='-1', role='menuitem')
+												i.fa.fa-search
+												| &nbsp;App Report
 									li(role='presentation')
 										a(href='/mystar', tabindex='-1', role='menuitem')
 											i.fa.fa-star.fa-lg

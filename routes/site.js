@@ -34,6 +34,7 @@ exports.about = function (req, res) {
 	});
 };
 
+// report
 exports.report = function (req, res) {
 	if (!req.session.user) {
 		req.flash('error', '请登录！');
