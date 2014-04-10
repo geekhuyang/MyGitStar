@@ -36,7 +36,7 @@ exports.about = function (req, res) {
 };
 
 // report
-exports.appReport = function (req, res) {
+exports.report = function (req, res) {
 	if (!req.session.user) {
 		req.flash('error', '请登录！');
 		return res.redirect('/signin');

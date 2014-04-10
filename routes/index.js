@@ -13,7 +13,7 @@ module.exports = function (app) {
 	app.get('/home', site.index);
 	app.get('/about', site.about);
 	app.get('/404', site.site404);
-	app.get('/appreport', site.appReport);
+	app.get('/report', site.report);
 
 	// signin/signout
 	app.get('/signin', sign.showSignin);
