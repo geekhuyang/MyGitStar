@@ -9,51 +9,26 @@ block content
 			div.form-group
 				label.control-label.col-sm-4(for='name') avatar
 				div.col-sm-8
-					img(src='#{user.avatar_url}', width='60')
+					img(src='#{current_user.avatar_url}', width='60')
 			div.form-group
 				label.control-label.col-sm-4(for='name') 用户名
 				div.col-sm-8
-					input.form-control.readonly(type='text', name='name', placeholder='', readonly='true', value='#{user.name}')
-			//- div.form-group
-			//- 	label.control-label.col-sm-4(for='email') 邮箱
-			//- 	div.col-sm-8
-			//- 		input.form-control.readonly(type='email', name='email', placeholder='', readonly='true', value='#{user.email}')
+					input.form-control.readonly(type='text', name='name', placeholder='', readonly='true', value='#{current_user.name}')
 			div.form-group
 				label.control-label.col-sm-4(for='github') Github
 				div.col-sm-8
 					div.input-group
 						span.input-group-addon @
-						- var githubUsername = user.githubUsername ? user.githubUsername : '';
+						- var githubUsername = current_user.githubUsername ? current_user.githubUsername : '';
 						input.form-control.readonly(type='text', name='github', readonly='true', value='#{githubUsername}')
-			//- div.form-group
-			//- 	label.control-label.col-sm-4(for='url') Github link
-			//- 	div.col-sm-8
-			//- 		- var url = user.url ? user.url : '';
-			//- 		input.form-control.readonly(type='text', name='url', readonly='true', placeholder='', value='#{url}')
 			div.form-group
 				label.control-label.col-sm-4(for='weibo') 微博
 				div.col-sm-8
 					div.input-group
 						span.input-group-addon @
 						- console.log(user)
-						- var weibo = user.weibo ? user.weibo : '';
+						- var weibo = current_user.weibo ? current_user.weibo : '';
 						input.form-control(type='text', name='weibo', value='#{weibo}')
-			//- div.form-group
-			//- 	label.control-label.col-sm-4(for='location') 所在地点
-			//- 	div.col-sm-8
-			//- 		- var location = user.location ? user.location : '';
-			//- 		input.form-control(type='text', name='location', placeholder='', value='#{location}')
-			//- div.form-group
-			//- 	label.control-label.col-sm-4(for='signature') 个性签名
-			//- 	div.col-sm-8
-			//- 		- var signature = user.signature ? user.signature : '';
-			//- 		input.form-control(type='text', name='signature', placeholder='', value='#{signature}')
-			//- div.form-group
-			//- 	label.control-label.col-sm-4(for='profile') 个人简介
-			//- 	div.col-sm-8
-			//- 		//- textarea 没有 value 属性
-			//- 		- var profile = user.profile ? user.profile : '';
-			//- 		textarea.form-control(row='3', name='profile') #{profile}
 			div.form-group
 				div.col-sm-8.col-md-offset-4
 					button.btn.btn-primary(type='submit') 保存设置

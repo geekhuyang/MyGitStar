@@ -18,16 +18,15 @@ exports.auth_user = function (req, res, next) {
 	}
 	// 第三部添加部分变量
 	res.locals.title = config.name;
-	res.locals.hostname = config.hostname;
+	// res.locals.hostname = config.hostname;
 
 	if (req.session.user) {
 		// session登录
 		// console.log('login by session');
 		if (config.admins.hasOwnProperty(req.session.user.name)) {
 			req.session.user.is_admin = true;
-			console.log('You are admin!');
+			// console.log('session --> admin!');
 		}
-		res.locals.current_user = req.session.user;
 		return next();
 	} else {
 		var cookie = req.cookies[config.auth_cookie_name];
@@ -44,12 +43,11 @@ exports.auth_user = function (req, res, next) {
 				return next(err);
 			}
 			if (user) {
-				if (config.admins.hasOwnProperty(user.name)) {
-					user.is_admin = true;
-					console.log('cookie --> admin');
-				}
 				req.session.user = user;
-				res.locals.current_user =  req.session.user;
+				if (config.admins.hasOwnProperty(user.name)) {
+				req.session.user.is_admin = true;
+					// console.log('cookie --> admin!');
+				}
 				return next();
 			} else {
 				return next();

@@ -14,7 +14,7 @@ exports.showSetting = function (req, res, next) {
 				res.locals.success = '保存成功。';
 			}
 			return res.render('setting', {
-				user: user,
+				current_user: user,
 				active: 'user',
 				script: 'main.min.js',
 			});
@@ -34,19 +34,10 @@ exports.setting = function (req, res, next) {
 	console.log(req.body);
 	// post
 	// 转义
-	// req.sanitize('location').escape();
-	// req.sanitize('signature').escape();
-	// req.sanitize('profile').escape();
 	req.sanitize('weibo').escape();
 	// trim
-	// req.sanitize('location').trim();
-	// req.sanitize('signature').trim();
-	// req.sanitize('profile').trim();
 	req.sanitize('weibo').trim();
 
-	// var location = req.body.location;
-	// var signature = req.body.signature;
-	// var profile = req.body.profile;
 	var weibo = req.body.weibo;
 
 	if (weibo !== '' && weibo.indexOf('@') === 0) {
@@ -73,9 +64,6 @@ exports.setting = function (req, res, next) {
 		if (err) {
 			return next(err);
 		}
-		// user.location = location;
-		// user.signature = signature;
-		// user.profile = profile;
 		user.weibo = weibo;
 
 		user.save(function (err) {

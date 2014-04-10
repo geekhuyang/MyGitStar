@@ -9,7 +9,7 @@ var config = require('../config').config;
 // 首页
 exports.index = function (req, res) {
 	"use strict";
-	res.render('index', {
+	return res.render('index', {
 		// 指定active菜单项
 		active: 'home',
 		// 指定脚本文件名
@@ -20,14 +20,14 @@ exports.index = function (req, res) {
 // 404
 exports.site404 = function (req, res) {
 	"use strict";
-	res.render('404', {
+	return res.render('404', {
 	});
 };
 
 // about
 exports.about = function (req, res) {
 	"use strict";
-	res.render('about', {
+	return res.render('about', {
 		// 指定active菜单项
 		active: 'about',
 		// 指定脚本文件名
@@ -41,7 +41,8 @@ exports.report = function (req, res) {
 		req.flash('error', '请登录！');
 		return res.redirect('/signin');
 	}
-	if (!config.admins.hasOwnProperty(req.session.user.name)) {
+	// if (!config.admins.hasOwnProperty(req.session.user.name)) {
+	if (!req.session.user.is_admin) {
 		return res.redirect('/404');
 	}
 	User.find({}, function (err, users) {
