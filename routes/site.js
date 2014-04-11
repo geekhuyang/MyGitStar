@@ -20,7 +20,7 @@ exports.index = function (req, res) {
 // 404
 exports.site404 = function (req, res) {
 	"use strict";
-	return res.render('404', {
+	return res.status(404).render('404', {
 	});
 };
 

@@ -17,27 +17,27 @@ var config = {
   // },
 
   // production 模式
-  debug: false, // 关闭debug
-  host: 'http://mygitstar.herokuapp.com',
-  port: 5000,
-  db: 'mongodb://mygitstar:sisi6612683@oceanic.mongohq.com:10010/mygitstar',
-  GITHUB_OAUTH: { // github oauth
-    clientID: '9461e398cdc91fe50e90',
-    clientSecret: 'e11499cad344c3fa4b801a0949ada87c9d9a9e1e',
-    callbackURL: 'http://mygitstar.herokuapp.com/auth/github/callback',
-  },
-
-  // // production 模式 xxooxx app
-  // debug: true, // 关闭debug
-  // host: 'http://xxooxx.herokuapp.com',
+  // debug: false, // 关闭debug
+  // host: 'http://mygitstar.herokuapp.com',
   // port: 5000,
   // db: 'mongodb://mygitstar:sisi6612683@oceanic.mongohq.com:10010/mygitstar',
-  // // db: 'mongodb://admin:admin@oceanic.mongohq.com:10053/xxooxx',
   // GITHUB_OAUTH: { // github oauth
-  //   clientID: '42a442ef951d2bd52f45',
-  //   clientSecret: '5839ecc6563c7dc474f7c303cfae4346ae0fc2dd',
-  //   callbackURL: 'http://xxooxx.herokuapp.com/auth/github/callback',
+  //   clientID: '9461e398cdc91fe50e90',
+  //   clientSecret: 'e11499cad344c3fa4b801a0949ada87c9d9a9e1e',
+  //   callbackURL: 'http://mygitstar.herokuapp.com/auth/github/callback',
   // },
+
+  // // production 模式 xxooxx app
+  debug: true, // 关闭debug
+  host: 'http://xxooxx.herokuapp.com',
+  port: 5000,
+  db: 'mongodb://mygitstar:sisi6612683@oceanic.mongohq.com:10010/mygitstar',
+  // db: 'mongodb://admin:admin@oceanic.mongohq.com:10053/xxooxx',
+  GITHUB_OAUTH: { // github oauth
+    clientID: '42a442ef951d2bd52f45',
+    clientSecret: '5839ecc6563c7dc474f7c303cfae4346ae0fc2dd',
+    callbackURL: 'http://xxooxx.herokuapp.com/auth/github/callback',
+  },
 
   google_tracker_id: 'UA-49713351-1',
 
