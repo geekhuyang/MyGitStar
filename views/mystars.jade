@@ -86,7 +86,8 @@ block content
 													i #&nbsp;
 													span.star-language #{star.language}
 												p.star-description #{star.description}
-												img.star-avatar(src='#{owner.avatar_url}', alt='avatar')
+												if !debugMode
+													img.star-avatar(src='#{owner.avatar_url}', alt='avatar')
 	
 	div#myModal.modal.fade
 		div.modal-dialog

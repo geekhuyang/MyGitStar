@@ -1,3 +1,4 @@
+var sendErrorMail = require('../services/mail').sendErrorMail;
 var User = require('../models').User;
 var sign = require('./sign');
 var config = require('../config').config;
@@ -18,6 +19,7 @@ exports.callback = function (req, res, next) {
 	var profile = req.user;
 	User.findOne({githubId: profile.id}, function (err, user) {
 		if (err) {
+			sendErrorMail(err);
 			return next(err);
 		}
 		if (user) {
@@ -30,6 +32,7 @@ exports.callback = function (req, res, next) {
 
 			user.save(function (err) {
 				if (err) {
+					sendErrorMail(err);
 					return next(err);
 				}
 				sign.gen_session(user, res);
@@ -62,7 +65,7 @@ exports.create = function (req, res) {
 	});
 	user.save(function (err) {
 		if (err) {
-			console.log(err);
+			sendErrorMail(err);
 			req.flash('error', err);
 			return res.redirect('/signin');
 		}

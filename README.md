@@ -116,6 +116,14 @@ build命令
 
 ## history
 
+### 0.2.3 / 2014-04-12
+
+1. 修复无设置public email的github用户无法登录的bug
+	* 描述：无设置public email，github oauth认证不返回，email值为null，数据库对email建立索引，导致重复值，save出错。
+	* 修复：删除email索引
+2. 将 [My Star] 移到 [首页] 和 [关于]一个 level
+
+
 ### 0.2.2 / 2014-04-10
 
 1. 添加admin查看app数据统计页面

@@ -6,6 +6,7 @@ var qs = require('qs');
 var marked = require('marked');
 var util = require('../lib/util');
 
+var sendErrorMail = require('../services/mail').sendErrorMail;
 var User = require('../proxy').User;
 var StarItem = require('../proxy').StarItem;
 var myGit = require('../lib/myGit');
@@ -22,6 +23,7 @@ exports.index = function (req, res) {
 	// 查找user
 	User.getUserById(req.session.user._id, function (err, user) {
 		if (err) {
+			sendErrorMail(err);
 			req.flash('error', '会话失效，重新登入！');
 			return res.redirect('/signin');
 		}
@@ -32,6 +34,7 @@ exports.index = function (req, res) {
 		// update from github
 		myGit.getStars(user.githubUsername, function (err, stars) {
 			if (err) {
+				sendErrorMail(err);
 				console.log('update from github error..');
 				req.flash('error', '更新出错，请刷新页面！');
 				res.render('mystars', {
@@ -49,7 +52,10 @@ exports.index = function (req, res) {
 			// 处理获取的数据
 			stars = JSON.parse(stars);
 			var callback = function (err) {
-				if (err) { console.log(err); }
+				if (err) {
+					sendErrorMail(err);
+					console.log(err);
+				}
 			};
 			for (var i = 0; i < stars.length; i++) {
 				var order = i;
@@ -59,7 +65,10 @@ exports.index = function (req, res) {
 			user.visit = user.visit + 1;
 			user.star_items = stars.length;
 			user.save(function (err) {
-				if (err) { console.log(err); }
+				if (err) {
+					sendErrorMail(err);
+					console.log(err);
+				}
 			});
 
 			// 查找star item
@@ -102,7 +111,6 @@ exports.index = function (req, res) {
 					}
 					charCodes[i] = result.join('-');
 				}
-
 				res.render('mystars', {
 					// 指定active菜单项
 					active: 'user',

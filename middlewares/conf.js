@@ -18,7 +18,7 @@ exports.auth_user = function (req, res, next) {
 	}
 	// 第三部添加部分变量
 	res.locals.title = config.name;
-	// res.locals.hostname = config.hostname;
+	res.locals.hostname = config.hostname;
 
 	if (req.session.user) {
 		// session登录
