@@ -4,7 +4,7 @@ var pkg = require('./package.json');
 
 var config = {
   name: 'My Git Star',
-  hostname: 'mygitstar.herokuapp.com',
+  hostname: 'xxooxx.herokuapp.com',
 
   // local 测试模式，如果部署到heroku，将这一片注释，下面一片取消注释
   // debug: true, // 开启debug
