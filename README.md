@@ -113,6 +113,7 @@ build命令
 	* 写了 placeholder 再写 value 就多余了吧
 	* My Star 可以移到 [首页] 和 [关于]一个 level
 	* [未分类] 和 [无备注] 可不可以搞成 placeholder，否则还要先清空
+	* 一行文字是没办法把description全部显示出来,多余的隐藏，用...代替
 
 ## history
 
