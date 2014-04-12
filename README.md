@@ -111,9 +111,13 @@ build命令
 7. 建议
 	* 还有个建议，就是点进去某个项目之后点了备注和分类输入的时候要先删除无备注几个字
 	* 写了 placeholder 再写 value 就多余了吧
-	* My Star 可以移到 [首页] 和 [关于]一个 level
+	* ~~My Star 可以移到 [首页] 和 [关于]一个 level~~
 	* [未分类] 和 [无备注] 可不可以搞成 placeholder，否则还要先清空
 	* 一行文字是没办法把description全部显示出来,多余的隐藏，用...代替
+
+## BUG记录
+
+1. 无设置public email的github用户无法登录的bug --> 0.2.3 / 2014-04-12 已修复
 
 ## history
 
@@ -122,8 +126,7 @@ build命令
 1. 修复无设置public email的github用户无法登录的bug
 	* 描述：无设置public email，github oauth认证不返回，email值为null，数据库对email建立索引，导致重复值，save出错。
 	* 修复：删除email索引
-2. 将 [My Star] 移到 [首页] 和 [关于]一个 level
-
+2. 将 [My Star] 移到 [首页] 和 [关于]一个 level，同时更名为[#星星图形# + Star]
 
 ### 0.2.2 / 2014-04-10
 

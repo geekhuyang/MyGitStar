@@ -1,7 +1,7 @@
-var sendErrorMail = require('../services/mail').sendErrorMail;
 var User = require('../models').User;
 var sign = require('./sign');
 var config = require('../config').config;
+var sendErrorMail = require('../services/mail').sendErrorMail;
 
 exports.githubSetting = function (req, res, next) {
 	"use strict";
@@ -19,6 +19,7 @@ exports.callback = function (req, res, next) {
 	var profile = req.user;
 	User.findOne({githubId: profile.id}, function (err, user) {
 		if (err) {
+			err.where = 'github.callback.User.findOne';
 			sendErrorMail(err);
 			return next(err);
 		}
@@ -32,6 +33,7 @@ exports.callback = function (req, res, next) {
 
 			user.save(function (err) {
 				if (err) {
+					err.where = 'github.callback.User.save';
 					sendErrorMail(err);
 					return next(err);
 				}
@@ -65,6 +67,7 @@ exports.create = function (req, res) {
 	});
 	user.save(function (err) {
 		if (err) {
+			err.where = 'github.create.User.save';
 			sendErrorMail(err);
 			req.flash('error', err);
 			return res.redirect('/signin');

@@ -6,11 +6,11 @@ var qs = require('qs');
 var marked = require('marked');
 var util = require('../lib/util');
 
-var sendErrorMail = require('../services/mail').sendErrorMail;
 var User = require('../proxy').User;
 var StarItem = require('../proxy').StarItem;
 var myGit = require('../lib/myGit');
 var config = require('../config').config;
+var sendErrorMail = require('../services/mail').sendErrorMail;
 
 // 我的星星页面
 exports.index = function (req, res) {
@@ -23,6 +23,7 @@ exports.index = function (req, res) {
 	// 查找user
 	User.getUserById(req.session.user._id, function (err, user) {
 		if (err) {
+			err.where = 'mystars.index.User.getUserById';
 			sendErrorMail(err);
 			req.flash('error', '会话失效，重新登入！');
 			return res.redirect('/signin');
@@ -34,6 +35,7 @@ exports.index = function (req, res) {
 		// update from github
 		myGit.getStars(user.githubUsername, function (err, stars) {
 			if (err) {
+				err.where = 'mystars.index.myGit.getStars';
 				sendErrorMail(err);
 				console.log('update from github error..');
 				req.flash('error', '更新出错，请刷新页面！');
@@ -53,6 +55,7 @@ exports.index = function (req, res) {
 			stars = JSON.parse(stars);
 			var callback = function (err) {
 				if (err) {
+					err.where = 'mystars.index.myGit.getStars.StarItem.updateOrSave';
 					sendErrorMail(err);
 					console.log(err);
 				}
@@ -66,13 +69,17 @@ exports.index = function (req, res) {
 			user.star_items = stars.length;
 			user.save(function (err) {
 				if (err) {
+					err.where = 'mystars.index.myGit.getStars.user.save';
 					sendErrorMail(err);
-					console.log(err);
 				}
 			});
 
 			// 查找star item
 			StarItem.getByUserId(user._id, function (err, starItems) {
+				if (err) {
+					err.where = 'mystars.index.myGit.getStars.StarItem.getByUserId';
+					sendErrorMail(err);
+				}
 				var length = starItems.length;
 				
 				// 计算各语言数量 并排序
