@@ -113,7 +113,7 @@ exports.index = function (req, res) {
 				}
 				res.render('mystars', {
 					// 指定active菜单项
-					active: 'user',
+					active: 'mystar',
 					// 指定脚本文件名
 					script: 'starPost.min.js',
 					categoriesKeys: categoriesKeys,

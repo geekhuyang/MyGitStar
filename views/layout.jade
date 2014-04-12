@@ -32,16 +32,16 @@ html
 							a(href='/home') 首页
 						li#about
 							a(href='/about') 关于
+						if !user
+							li#signin
+								a(href='/signin') 登入
 						if user
 							li#mystar
 								a(href='/mystar') 
 									i.fa.fa-star-o.fa-lg
 									| &nbsp;Star
-					ul.nav.navbar-nav.navbar-right
-						if !user
-							li#signin
-								a(href='/signin') 登入
-						if user
+					if user
+						ul.nav.navbar-nav.navbar-right
 							li#user.dropdown
 								a#dropBtn(role='button', data-toggle='dropdown', data-target='#navDropdown')
 									| #{user.name}&nbsp;
