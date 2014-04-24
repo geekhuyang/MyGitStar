@@ -4,6 +4,7 @@ var pkg = require('./package.json');
 
 var config = {
   name: 'My Git Star',
+  hostname: 'mygitstar.herokuapp.com',
 
   // local 测试模式
   debug: true, // 开启debug
@@ -20,11 +21,21 @@ var config = {
     callbackURL: 'local mode',
   },
 
-  hostname: 'herokuapp.com',
   session_secret: 'my_git_star', // session secret
   auth_cookie_name: 'my_git_star', // cookie name
   maxAge: 3600000 * 24 * 30, // cookie 有效期
   admins: { xxx: true } // admin 管理员账号
+
+  // mail SMTP
+  mail_opts: {
+    host: 'smtp.qq.com',
+    port: 25,
+    auth: {
+      user: 'xx@xx.com',
+      pass: 'xxxx'
+    }
+  },
+  log_mail: 'xx@xx.com',
 };
 
 module.exports = config;
