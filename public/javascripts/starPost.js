@@ -3,8 +3,8 @@ $(document).ready(function () {
 	"use strict";
 
 	var isUpdating = false;
-	var shortTimeout = 10000;
-	var removeTimeout = 3000;
+	var ajaxTimeout = 15000;
+	var removeTimeout = 2000;
 
 	// 为导航菜单加active
 	var active = $('#navHeader').attr('data-active');
@@ -16,6 +16,9 @@ $(document).ready(function () {
 	$('.tab-content').mouseover(function (e) {
 		$(e.target).closest('li').tooltip('show');
 	});
+	$('.delete').mouseover(function (e) {
+		$(this).tooltip('show');
+	});
 
 	// 点击分类tab，显示对应content
 	$('#myTab a').click(function (e) {
@@ -26,6 +29,68 @@ $(document).ready(function () {
 	// 为第一个标签页和标签内容加active
 	$('#myTab').find('li').first().addClass('active');
 	$('.tab-content').find('div').first().addClass('active in');
+
+	// 分类管理
+	// 添加分类面板事件
+	$('.add').popover();
+	$('.add').on('shown.bs.popover', function () {
+		// 每次出现面板，清空input值
+		$(this).next().find('input[name="newCategory"]').focus().val('');
+
+		$('body').click(closePopover);
+		$('#closePopover').click(function (e) {
+			e.preventDefault();
+			$('.add').popover('hide');
+			$('body').unbind('click', closePopover);
+		});
+		$('#addCategory').closest('form').submit(function (e) {
+			e.preventDefault();
+			var newCategory = $(this).find('input[name="newCategory"]').val();
+			if (newCategory === '') {
+				showMessage('danger', '分类非空！');
+			} else if ($('#categoryTable').find('tr[data-category=' + newCategory + ']').length !== 0) {
+				showMessage('danger', '该分类已经存在！');
+			} else {
+				addCategory(newCategory);
+				showMessage('success', '添加分类成功！');
+			}
+			var $myModal = $('#myModal');
+			var select = $myModal.find('select[name="category"]');
+			select.children().each(function () {
+				$(this).remove();
+			})
+			var categories = $('#categoryTable').find('tr');
+			categories.each(function () {
+				var text = $(this).find('td').first().text();
+				var option = $('<option value=' + text + '>' + text + '</option>');
+				option.appendTo(select);
+			});
+			select.val($('#star-' + $myModal.find('.modal-id').val()).attr('data-category'));
+			$('#closePopover').click();
+		});
+	})
+	function closePopover(e) {
+		if (!$.contains($('.add').next()[0], e.target)) {
+			$('.add').popover('hide');
+			$('body').unbind('click', closePopover);
+		}
+	}
+	// 删除某个分类
+	function removeCategory(category) {
+		var categoryToDelete = $('#categoryTable').find('tr[data-category=' + category + ']');
+		if (categoryToDelete.length) {
+			categoryToDelete.remove();
+		}
+	}
+	// 添加分类
+	function addCategory(category) {
+		var tbody = $('#categoryTable').find('tbody');
+		var tr = $('<tr data-category=' + category + '><td>' + category + '</td></tr>');
+		tr.appendTo(tbody);
+		tr.find('.delete').mouseover(function (e) {
+			$(this).tooltip('show');
+		});
+	}
 
 	// 点击某个star项目，显示modal，事件委托在tab-content父元素上
 	$('.tab-content').click(function (e) {
@@ -55,6 +120,17 @@ $(document).ready(function () {
 		var category = $li.attr('data-category');
 		$myModal.find('.modal-category input').text(category);
 		$myModal.find('.modal-category input').val(category);
+		var select = $myModal.find('select[name="category"]');
+		select.children().each(function () {
+			$(this).remove();
+		})
+		var categories = $('#categoryTable').find('tr');
+		categories.each(function () {
+			var text = $(this).find('td').first().text();
+			var option = $('<option value=' + text + '>' + text + '</option>');
+			option.appendTo(select);
+		});
+		select.val($li.attr('data-category'));
 		// var tags = $li.attr('data-tags').split(',').join(' ');
 		// $myModal.find('.modal-tags input').text(tags);
 		// $myModal.find('.modal-tags input').val(tags);
@@ -123,16 +199,84 @@ $(document).ready(function () {
 		}
 	};
 
+	// 备注栏获取焦点，全选文本
+	$('textarea[name="remark"]').focus(function () {
+		var that = this;
+		setTimeout(function () { that.select(); }, 30);
+	});
+
+	// 将一个项目移动到另一个分类
+	var move = function (starid, oldCategory, category) {
+		var $li = $('#star-' + starid);
+
+		// 将category进行编码
+		var result = [];
+		for (var j = 0; j < category.length; j++) {
+			result.push(category.charCodeAt(j));
+		}
+		var categoryCodes = result.join('-');
+		var $category = $('#content-' + categoryCodes);
+
+		if ($li.length) {
+			var $oldCategory = $li.closest('div.tab-pane'); // 旧的分类
+			// 解决li之后的编号
+			$li.nextAll().each(function () {
+				var order = $(this).find('.item-order').text();
+				$(this).find('.item-order').text(--order);
+			});
+
+			if ($category.length) { // 新分类已存在
+				var newOl = $category.find('ol').first();
+				$li.find('.item-order').text(newOl.find('li').length + 1);
+				$li.appendTo(newOl);
+				// 增加new tab记录的数量
+				var id = $category.attr('id');
+				id = id.replace('content', 'tab');
+				$('#' + id).find('.badge').text($category.find('li').length);
+			} else { // 新分类不存在，新建分类
+				$li.find('.item-order').text('1');
+				$category = $('<div id="content-' + categoryCodes + '" class="tab-pane fade"><section id="star"><ol></ol></section></div>');
+				$category.appendTo($('div.tab-content')[0]);
+				var $ol = $category.find('ol').first();
+				$li.prependTo($ol);
+				var $newTab = $('<li id="tab-' + categoryCodes + '"><a data-toggle="tab" href="#content-' + categoryCodes + '">' + category + '<span class="badge">1</span></a></li>');
+				$newTab.appendTo($('#myTab')[0]);
+			}
+			if ($oldCategory.find('li').length === 0) { // 如果li走了之后旧分类长度为0
+				var id = $oldCategory.attr('id');
+				id = id.replace('content', 'tab');
+				$('#' + id).remove();
+				$oldCategory.remove();
+				$category.addClass('active in');
+				var newid = $category.attr('id');
+				newid = newid.replace('content', 'tab');
+				$('#' + newid).addClass('active');
+			} else { // 减少old tab记录的数量
+				var id3 = $oldCategory.attr('id');
+				id3 = id3.replace('content', 'tab');
+				$('#' + id3).find('.badge').text($oldCategory.find('li').length);
+			}
+		} else {
+			showMessage('danger', '找不到元素');
+		}
+	}
+
+	// show message
+	var showMessage = function (status, message) {
+		var messageHtml = $('<div class="row alert alert-' + status + ' alert-dismissable"><button class="close" type="button" data-dismiss="alert" aria-hidden="true">&times;</button><p>' + message + '</p></div>');
+		messageHtml.prependTo($('.infoBox')[0]);
+		autoremove(messageHtml, removeTimeout);	
+	}
+
 	// 表单处理
 	$('#myModal form').submit(function (event) {
 		event.preventDefault();
 		var requestData = $(this).serialize();
 		requestData += '&action=update';
-		console.log(requestData);
 		if (!isUpdating) {
 			$.ajax({
 				type: 'POST',
-				timeout: shortTimeout,
+				timeout: ajaxTimeout,
 				url: '/ajaxPost',
 				data: requestData,
 				success: function (data) {
@@ -144,116 +288,27 @@ $(document).ready(function () {
 						$li.attr({'data-remark': data.remark});
 						$li.attr({'data-original-title': data.remark});
 						// $li.attr({'data-tags': data.tags});
+						var oldCategory = $li.attr('data-category');
 						$li.attr({'data-category': data.category});
-						// 将category进行编码
-						var result = [];
-						for (var j = 0; j < data.category.length; j++) {
-							result.push(data.category.charCodeAt(j));
+
+						if (oldCategory !== data.category) { // 改变分类
+							move(data.starid, oldCategory, data.category);
 						}
-						data.categoryCodes = result.join('-');
-						var $category = $('#content-' + data.categoryCodes);
-
-						if ($li.length) {
-							if ($category.length) {
-								var $oldCategory = $li.closest('div.tab-pane');
-								if (data.categoryCodes === $oldCategory.attr('id').replace('content-', '')) {
-									// 分类不变
-								} else {
-									// 解决li之后的编号
-									$li.nextAll().each(function () {
-										var order = $(this).find('.item-order').text();
-										$(this).find('.item-order').text(--order);
-									});
-									var newOl = $category.find('ol').first();
-									$li.find('.item-order').text(newOl.find('li').length + 1);
-									$li.appendTo(newOl);
-									// 如果旧分类走了li之后长度为0
-									if ($oldCategory.find('li').length === 0) {
-										var id = $oldCategory.attr('id');
-										id = id.replace('content', 'tab');
-										$('#' + id).remove();
-										$oldCategory.remove();
-										$category.addClass('active in');
-										var newid = $category.attr('id');
-										newid = newid.replace('content', 'tab');
-										$('#' + newid).addClass('active');
-									} else {
-										// 减少old tab记录的数量
-										var id3 = $oldCategory.attr('id');
-										id3 = id3.replace('content', 'tab');
-										$('#' + id3).find('.badge').text($oldCategory.find('li').length);
-									}
-									// 增加new tab记录的数量
-									var id4 = $category.attr('id');
-									id4 = id4.replace('content', 'tab');
-									$('#' + id4).find('.badge').text($category.find('li').length);
-								}
-								var $success = $('<div class="row alert alert-success alert-dismissable"><button class="close" type="button" data-dismiss="alert" aria-hidden="true">&times;</button><p>更新成功</p></div>');
-								$success.prependTo($('.infoBox')[0]);
-								autoremove($success, removeTimeout);
-							} else {
-								// 旧分类
-								var $oldCategory2 = $li.closest('div.tab-pane');
-
-								// 解决li之后的编号
-								$li.nextAll().each(function () {
-									var order = $(this).find('.item-order').text();
-									$(this).find('.item-order').text(--order);
-								});
-
-								$li.find('.item-order').text('1');
-
-								var $newCategory = $('<div id="content-' + data.categoryCodes +
-									'" class="tab-pane fade"><section id="star"><ol></ol></section></div>');
-								$newCategory.appendTo($('div.tab-content')[0]);
-								var $ol = $newCategory.find('ol').first();
-								$li.prependTo($ol);
-								var $newTab = $('<li id="tab-' + data.categoryCodes + '"><a data-toggle="tab" href="#content-' + data.categoryCodes + '">' + data.category + '<span class="badge">1</span></a></li>');
-								$newTab.appendTo($('#myTab')[0]);
-
-								if ($oldCategory2.find('li').length === 0) {
-									var id5 = $oldCategory2.attr('id');
-									id5 = id5.replace('content', 'tab');
-									$('#' + id5).remove();
-									$oldCategory2.remove();
-									$newTab.addClass('active');
-									$newCategory.addClass('active in');
-								} else {
-									// 减少old tab记录的数量
-									var id6 = $oldCategory2.attr('id');
-									id6 = id6.replace('content', 'tab');
-									$('#' + id6).find('.badge').text($oldCategory2.find('li').length);
-								}
-								var submitSuccess = $('<div class="row alert alert-success alert-dismissable"><button class="close" type="button" data-dismiss="alert" aria-hidden="true">&times;</button><p>更新成功</p></div>');
-								submitSuccess.prependTo($('.infoBox')[0]);
-								autoremove(submitSuccess, removeTimeout);
-							}
-						} else {
-							var $error = $('<div class="row alert alert-danger alert-dismissable"><button class="close" type="button" data-dismiss="alert" aria-hidden="true">&times;</button><p>找不到元素</p></div>');
-							$error.prependTo($('.infoBox')[0]);
-							autoremove($error, removeTimeout);
-						}
-					} else {
-						// ajax失败 
-						var submitError = $('<div class="row alert alert-danger alert-dismissable"><button class="close" type="button" data-dismiss="alert" aria-hidden="true">&times;</button><p>' + data.message + '</p></div>');
-						submitError.prependTo($('.infoBox')[0]);
-						autoremove(submitError, removeTimeout);
+						showMessage('success', '更新成功');
+					} else { // ajax失败
+						showMessage('danger', data.message);
 					}
 				},
 				error: function () {
 					isUpdating = false;
-					var $error = $('<div class="row alert alert-danger alert-dismissable"><button class="close" type="button" data-dismiss="alert" aria-hidden="true">&times;</button><p>更新超时</p></div>');
-					$error.prependTo($('.infoBox')[0]);
-					autoremove($error, removeTimeout);
+					showMessage('danger', '更新超时');
 				}
 			});
 			isUpdating = true;
 			$('#myModal').modal('hide');
 		} else {
 			$('#myModal').modal('hide');
-			var show = $('<div class="row alert alert-danger alert-dismissable"><button class="close" type="button" data-dismiss="alert" aria-hidden="true">&times;</button><p>请等待上次操作反馈后再提交更新..</p></div>');
-			show.prependTo($('.infoBox')[0]);
-			autoremove(show, removeTimeout);
+			showMessage('danger', '请等待上次操作反馈后再提交更新..');
 		}
 	});
 
@@ -262,11 +317,9 @@ $(document).ready(function () {
 		event.preventDefault();
 		var $modal = $(this).closest('.modal');
 		var id = $modal.find('.modal-id').val();
-		console.log('id: ', id);
 		$('#myModal').modal('hide');
 		// 是否已经缓存过readme页面
 		if ($('#readme-' + id).length) {
-			console.log('exist');
 			$('#readme-' + id).modal('show');
 		} else {
 			console.log('create');

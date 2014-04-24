@@ -50,7 +50,7 @@ module.exports = function (grunt) {
 					banner: '/*! <%= pkg.name %> <%= grunt.template.today("dd-mm-yyyy") %> */\n'
 				},
 				files: {
-					'public/stylesheets/build/style.min.css': ['public/stylesheets/autoprefix/style.css', 'public/stylesheets/Github2.css']
+					'public/stylesheets/build/style.min.css': ['public/stylesheets/autoprefix/style.css', 'public/stylesheets/readme.css']
 				}
 			}
 		},
@@ -82,7 +82,7 @@ module.exports = function (grunt) {
 				}
 			},
 			css: {
-				files: ['public/stylesheets/style.css', 'public/stylesheets/Github2.css'],
+				files: ['public/stylesheets/style.css', 'public/stylesheets/readme.css'],
 				tasks: ['autoprefixer', 'cssmin'],
 				options: {
 					spawn: false,

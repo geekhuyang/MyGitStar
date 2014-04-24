@@ -1,3 +1,4 @@
+/* stylesheet reset */
 html, body, div, span, object, iframe,
 h1, h2, h3, h4, h5, h6, p, blockquote, pre,
 abbr, address, cite, code,
@@ -94,7 +95,7 @@ input, select {
 }
 
 /* 
- * ----------------------------- *
+ * we begin here.
  */
 
 * {
@@ -270,11 +271,6 @@ h1 {
 	text-align: left;
 }
 
-/* 忘记密码 */
-#forgot_pass {
-	padding-left: 1.5em;
-}
-
 /* container */
 #container {
 	margin-top: 0;
@@ -325,12 +321,17 @@ footer {
 	padding: .5em;
 	font-size: 1em;
 }
+#sidebar .delete, #sidebar .add {
+	cursor: pointer;
+	margin-left: .8em;
+	border: none;
+	outline: none;
+	background: none;
+}
 
 /* readme */
 .readme {
-	/*width: 100%;*/
 	margin: 0 auto;
-	/*box-shadow: #ccc 0 1px 4px 1px;*/
 }
 
 /* report */

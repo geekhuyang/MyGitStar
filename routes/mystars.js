@@ -60,9 +60,12 @@ exports.index = function (req, res) {
 					console.log(err);
 				}
 			};
+			// 记录所有star id的数组，用于删除数据库中已被unstarred的项目
+			var idSet = [];
 			for (var i = 0; i < stars.length; i++) {
 				var order = i;
 				StarItem.updateOrSave(user._id, stars[i], order, callback);
+				idSet.push(stars[i].id);
 			}
 			user.update_at = new Date();
 			user.visit = user.visit + 1;
@@ -73,6 +76,8 @@ exports.index = function (req, res) {
 					sendErrorMail(err);
 				}
 			});
+			console.log('idSet.length = ', idSet.length);
+
 
 			// 查找star item
 			StarItem.getByUserId(user._id, function (err, starItems) {
@@ -81,6 +86,36 @@ exports.index = function (req, res) {
 					sendErrorMail(err);
 				}
 				var length = starItems.length;
+				// 存在已被unstarred的项目
+				if (length > idSet.length) {
+					// 数据库id集
+					var oldIdSet = [];
+					for (var j = 0; j < length; j++) {
+						oldIdSet.push(starItems[j].star.id);
+					}
+					console.log('oldIdSet.length = ', oldIdSet.length);
+					var unstarItems = _.difference(oldIdSet, idSet);
+					console.log('unstarItems = ', unstarItems);
+					// delete
+					for (var k = 0; k < unstarItems.length; k++) {
+						StarItem.remove(user._id, unstarItems[k], function () {});
+					}
+					// delete from starItems
+					var deleteIndexs = [];
+					for (var m = 0; m < starItems.length; m++) {
+						if (_.contains(unstarItems, starItems[m].star.id)) {
+							deleteIndexs.push(m);
+						}
+					}
+					console.log('deleteIndexs = ', deleteIndexs);
+					// delete from rear to front
+					for (var n = deleteIndexs.length - 1; n >= 0; n--) {
+						console.log('delete ', deleteIndexs[n]);
+						starItems.splice(deleteIndexs[n], 1);
+					}
+					// reset length;
+				 	length = starItems.length;
+				}
 				
 				// 计算各语言数量 并排序
 				var languages = _.chain(starItems).reduce(function (counts, starItem) {
@@ -98,6 +133,7 @@ exports.index = function (req, res) {
 
 				// 未分类置前
 				categoriesKeys.sort();
+				var categoryManage = categoriesKeys.slice(0, categoriesKeys.length);
 				var unClassified = '未分类';
 				var index = categoriesKeys.indexOf(unClassified);
 				if (index !== -1) {
@@ -123,6 +159,7 @@ exports.index = function (req, res) {
 					active: 'mystar',
 					// 指定脚本文件名
 					script: 'starPost.min.js',
+					categoryManage: categoryManage,
 					categoriesKeys: categoriesKeys,
 					categories: categories,
 					languages: languages,

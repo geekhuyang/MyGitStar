@@ -9,9 +9,9 @@ block content
 					div.panel.panel-default
 						div.panel-heading
 							h4.panel-title
-								a(data-toggle="collapse", data-parent="#accordion", href="#collapseThree")
+								a(data-toggle="collapse", data-parent="#accordion", href="#collapseOne")
 									| # 基本信息
-						div#collapseThree.panel-collapse.in
+						div#collapseOne.panel-collapse.in
 							div.panel-body
 								- if (user.githubUsername)
 									span
@@ -21,12 +21,26 @@ block content
 									span 
 										i.fa.fa-star.fa-lg &nbsp;
 										em.total #{length}
+					div.panel.panel-default.hidden
+						div.panel-heading
+							h4.panel-title
+								a(data-toggle="collapse", data-parent="#accordion", href="#collapseTwo")
+									| # 分类管理
+								a.add(data-html='true', data-content="<form><input name='newCategory' style='text-align=center;'></input><button type='submit' id='addCategory' class='btn btn-primary btn-block'>确认</button></form>", title="添加新分类<i id='closePopover' class='fa fa-times fa-lg' style='float:right;cursor:pointer;'></i>", data-toggle="popover")
+									i.fa.fa-plus-circle
+						div#collapseTwo.panel-collapse.collapse
+							- if (languages)
+								table#categoryTable.table.table-hover.text-center
+									tbody
+										- for (var j = 0; j < categoryManage.length; j++)
+											tr(data-category='#{categoryManage[j]}')
+												td #{categoryManage[j]}
 					div.panel.panel-default
 						div.panel-heading
 							h4.panel-title
-								a(data-toggle="collapse", data-parent="#accordion", href="#collapseOne")
+								a(data-toggle="collapse", data-parent="#accordion", href="#collapseThree")
 									| # 排序
-						div#collapseOne.panel-collapse.collapse
+						div#collapseThree.panel-collapse.collapse
 							div.panel-body.text-center
 								div.btn-group
 									button#sortByStar.btn.btn-default(type='button') 
@@ -36,9 +50,9 @@ block content
 					div.panel.panel-default
 						div.panel-heading
 							h4.panel-title
-								a(data-toggle="collapse", data-parent="#accordion", href="#collapseTwo")
+								a(data-toggle="collapse", data-parent="#accordion", href="#collapseFour")
 									| # 语言分布
-						div#collapseTwo.panel-collapse.collapse
+						div#collapseFour.panel-collapse.collapse
 							//- div.panel-body
 							- if (languages)
 								table.table.table-hover.text-center
@@ -51,6 +65,7 @@ block content
 										tr
 											td #{i}
 											td #{languages[i]}
+					
 	section#main.col-sm-9
 		ul#myTab.nav.nav-pills
 			- for (var i = 0; i < categoriesKeys.length; i++)
@@ -74,7 +89,7 @@ block content
 										li(id='star-#{star.id}', data-order='#{starItem.order}', data-id='#{star.id}', data-htmlUrl='#{star.html_url}', data-gitUrl='#{star.git_url}', data-sshUrl='#{star.ssh_url}', data-cloneUrl='#{star.clone_url}', data-size='#{star.size}', data-starNum='#{star.stargazers_count}', data-forkNum='#{star.forks_count}', data-watchNum='#{star.watchers_count}', data-homepage='#{star.homepage}', data-category='#{starItem.category}', data-remark='#{starItem.remark}', data-placement="top", data-toggle="tooltip", data-original-title="#{starItem.remark}")
 											h3.star-order
 												div.item-order= k+1
-												div.star-count 
+												div.star-count
 													i.fa.fa-star &nbsp;
 													| #{star.stargazers_count}
 											div.star-info
@@ -116,9 +131,13 @@ block content
 				form(method="post", role="form")
 					div.modal-body
 						input.modal-id.form-control.hidden(name='starid', value='')
-						div.input-group.modal-category.col-sm-4
+						div.input-group.modal-category.col-sm-6
 							span.input-group-addon 分类
-							input.form-control(name='category', type='text', placeholder='分类')
+							select.form-control(name='category')
+							span.input-group-addon
+								a.add(style='position:absoluted;top:0px;right:0px;cursor:pointer;display:inline-block;', data-html='true', data-content="<form><input name='newCategory'></input><button type='submit' id='addCategory' class='btn btn-primary btn-block'>确认添加</button></form>", title="添加新分类<i id='closePopover' class='fa fa-times fa-lg' style='float:right;cursor:pointer;'></i>", data-toggle="popover")
+									i.fa.fa-plus-circle.fa-lg
+							//- input.form-control(name='category', type='text', placeholder='分类')
 						div.input-group.modal-remark
 							span.input-group-addon 备注
 							textarea.form-control(name='remark', row='2', placeholder='添加备注')

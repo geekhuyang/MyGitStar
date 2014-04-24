@@ -58,6 +58,23 @@ var getByUserIdAndStarID = function (userid, starid, callback) {
 exports.getByUserIdAndStarID = getByUserIdAndStarID;
 
 /**
+ * 根据用户ID/starID 查找StarItem并删除
+ * Callback:
+ * - err, 数据库异常
+ * @param {Schema.ObjectId} userid 用户ID
+ * @param {Schema.ObjectId} starid star ID
+ * @param {Function} callback 回调函数
+ */
+var remove = function (userid, starid, callback) {
+	"use strict";
+	StarItem.findOne({'user_id': userid, 'star.id': starid}, function (err, starItem) {
+		if (err) return callback(err);
+		starItem.remove(callback);
+	});
+};
+exports.remove = remove;
+
+/**
  * 新建或者更新一个star条目
  * Callback:
  * - err, 数据库异常
